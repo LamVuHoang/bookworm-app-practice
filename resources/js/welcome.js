@@ -8,7 +8,7 @@ class Welcome extends Component {
                 <section className="content">
                     <div className="small-welcome-text">AMA</div>
                     <div className="welcome-text">
-                        Welcome to <span>B</span>ook <span>W</span>orm
+                        Welcome to <span>Book</span> <span>Worm</span>
                     </div>
                 </section>
             </main>

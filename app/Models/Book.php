@@ -11,4 +11,14 @@ class Book extends Model
 
     public $timestamps = false;
     protected $table = 'book';
+
+    public function discount()
+    {
+        return $this->hasOne(Discount::class, 'book_id');
+    }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class, 'book_id');
+    }
 }

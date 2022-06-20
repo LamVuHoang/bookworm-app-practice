@@ -11,9 +11,4 @@ class Discount extends Model
 
     public $timestamps = false;
     protected $table = 'discount';
-
-    public function Book()
-    {
-        return $this->belongsTo(Book::class);
-    }
 }
