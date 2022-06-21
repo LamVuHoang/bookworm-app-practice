@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Repositories\BookRepository;
 use App\Repositories\DiscountRepository;
+use App\Repositories\ReviewRepository;
 use Illuminate\Http\Request;
 
 class HomePageController extends Controller
 {
-    private BookRepository $_bookRepository;
-    private DiscountRepository $_discountRepository;
-    public function __construct()
+    protected ReviewRepository $_reviewRepository;
+    public function __construct(
+        BookRepository $bookRepository,
+        DiscountRepository $discountRepository,
+        ReviewRepository $reviewRepository
+    )
     {
-        $this->_bookRepository = new BookRepository();
-        $this->_discountRepository = new DiscountRepository();
+        parent::__construct($bookRepository, $discountRepository);
+        $this->_reviewRepository = $reviewRepository;
     }
 
     public function index($id = null)
@@ -23,11 +27,16 @@ class HomePageController extends Controller
 
     public function review($id_book, $id_review = null)
     {
-        return response($this->_bookRepository->getReview($id_book, $id_review));
+        return response($this->_bookRepository->getReviewEachBook($id_book, $id_review));
     }
 
-    public function topTenDiscount()
+    public function topBookDiscount()
     {
-        return response($this->_bookRepository->filter());
+        return response($this->_discountRepository->getTopDiscount());
+    }
+
+    public function topRatingStar()
+    {
+        return response($this->_reviewRepository->getTopRatingStar());
     }
 }
