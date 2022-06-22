@@ -11,8 +11,8 @@ class ShopPageController extends Controller
         return $this->_bookRepository->filter($request->input('conditions'));
     }
 
-    public function discount()
+    public function sort(Request $request)
     {
-        return response($this->_bookRepository->discount());
+        return response($this->_bookRepository->sort($request->input('conditions')));
     }
 }

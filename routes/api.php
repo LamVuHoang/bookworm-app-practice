@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\ProductPageController;
 use App\Http\Controllers\ShopPageController;
 
 /*
@@ -20,46 +21,47 @@ use App\Http\Controllers\ShopPageController;
 //     return $request->user();
 // });
 
-Route::prefix('books')->group(function () {
-    Route::get('{id?}', [HomePageController::class, 'index'])->where('id', '[0-9]+');
-    Route::get('{id_book}/reviews/{id_review?}', [HomePageController::class, 'review'])
-        ->where('id_book', '[0-9]+')->where('id_review', '[0-9]+');
-});
-
 Route::prefix('home')->group(function () {
     // Get top 10 books with the most discount : DONE
     Route::get('top_book_discount', [HomePageController::class, 'topBookDiscount']);
-    // Get top 8 books with the most rating start : DONE
-    Route::get('top_rating_star', [HomePageController::class, 'topRatingStar']);
-    // Get top 8 books with the most review
-    // (total number of review of a book and lowest final price )
-    // USE https://laravel.com/docs/9.x/queries#subquery-joins
-
+    // Recommended: Get top 8 books with the most rating start : DONE
+    Route::get('top_most_rating_star', [HomePageController::class, 'topMostRatingStar']);
+    // Popular: Get top 8 books with the most review : DONE
+    Route::get('top_most_review', [HomePageController::class, 'topMostReview']);
 });
 
 Route::prefix('shop')->group(function () {
-    // Sort book by on sale
-
-    // Sort by popularity
-
-    // Sort by real_price :
-    Route::get('discount', [ShopPageController::class, 'discount']);
+    // Sort book by on sale ????? Requirement File
+    // Sort by popularity ????? Requirement File
+    // Sort by real_price 
+    // DONE
+    Route::get('sort', [ShopPageController::class, 'sort']);
 
     // Filtering by Category:  ?conditions=category,2
     // Filtering by Author: ?conditions=author,2
     // Filtering by Rating Review
     // DONE
     Route::get('filter', [ShopPageController::class, 'filter']);
-
-
 });
 
 Route::prefix('product')->group(function () {
-    // Add to Cart
+    // Listing: List rating star, number of review, review_num each rating star: DONE
+    Route::get('{id?}', [ProductPageController::class, 'index'])->where('id', '[0-9]+');
+    Route::get('{id_book}/rating/{rating_star?}', [ProductPageController::class, 'review'])
+        ->where('id_book', '[0-9]+')->where('rating_star', '[1-5]');
+
+    // Sorting: Date of review
 
 });
 
 Route::prefix('cart')->group(function () {
     // CRUD order & order_item
+    //READ 
+
+    //CREATE
+
+    //UPDATE
+
+    //DELETE
 
 });

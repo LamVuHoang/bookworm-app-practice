@@ -15,15 +15,12 @@ use App\Repositories\ReviewRepository;
 class Controller extends BaseController
 {
     protected BookRepository $_bookRepository;
-    protected DiscountRepository $_discountRepository;
     protected $item_per_page;
 
     public function __construct(
         BookRepository $bookRepository,
-        DiscountRepository $discountRepository
     ) {
         $this->_bookRepository = $bookRepository;
-        $this->_discountRepository = $discountRepository;
 
         BaseRepository::setItemPerPage(5);
         BaseRepository::setReviewPerPage(10);
