@@ -20,13 +20,13 @@ class HomePageController extends Controller
         return response($this->_discountRepository->getTopDiscount($number));
     }
 
-    public function topMostRatingStar()
+    public function getRecommended($number = 8)
     {
-        return response($this->_bookRepository->getTopMostRatingStar());
+        return response($this->_bookRepository->getRecommended($number));
     }
 
-    public function topMostReview()
+    public function getPopular($number = 8)
     {
-        return response($this->_bookRepository->getTopMostReview());
+        return response($this->_bookRepository->getPopular($number));
     }
 }

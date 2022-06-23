@@ -26,10 +26,11 @@ Route::prefix('home')->group(function () {
     Route::get('get-top-discount/{number?}', [HomePageController::class, 'getTopDiscount'])
         ->where('number', '[0-9]+');
     // Recommended: Get top 8 books with the most rating start : DONE
-    Route::get('top-most-rating-star/{number?}', [HomePageController::class, 'topMostRatingStar'])
+    Route::get('get-recommended/{number?}', [HomePageController::class, 'getRecommended'])
         ->where('number', '[0-9]+');
     // Popular: Get top 8 books with the most review : DONE
-    Route::get('top_most_review', [HomePageController::class, 'topMostReview']);
+    Route::get('get-popular/{number?}', [HomePageController::class, 'getPopular'])
+        ->where('number', '[0-9]+');
 });
 
 Route::prefix('shop')->group(function () {

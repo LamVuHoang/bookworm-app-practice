@@ -50,11 +50,11 @@ class BookRepository extends BaseRepository
         return $this->reviewPagination($this->query->find($bookId)->reviews());
     }
 
-    public function getTopMostRatingStar()
+    public function getRecommended($number)
     {
-        return $this->getStarScoring()->orderBy('star_scoring', 'DESC')->limit(8)->get();
+        return $this->getStarScoring()->orderBy('star_scoring', 'DESC')->limit($number)->get();
     }
-    public function getTopMostReview()
+    public function getPopular($number)
     {
         $finalPrice = $this->getFinalPriceRaw();
 
@@ -66,7 +66,7 @@ class BookRepository extends BaseRepository
             ->withCount(['reviews as review_count'])
             ->orderBy('review_count', 'DESC')
             ->orderBy('sub.final_price')
-            ->limit(8)
+            ->limit($number)
             ->get();
     }
 
@@ -91,7 +91,6 @@ class BookRepository extends BaseRepository
             $conditionsArr = ['', 'DESC'];
         }
 
-
         if ($conditionsArr[0] === 'sale') {
             return $this->getFinalPriceFullTable()
                 ->orderBy('sub.discount_price', $conditionsArr[1])
@@ -105,7 +104,7 @@ class BookRepository extends BaseRepository
                 })
                 ->select('*')
                 ->withCount(['reviews as review_count'])
-                ->orderBy('review_count', 'DESC')
+                ->orderBy('review_count', $conditionsArr[1])
                 ->orderBy('sub.final_price')
                 ->get();
         } else {
