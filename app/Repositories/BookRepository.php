@@ -76,6 +76,7 @@ class BookRepository extends BaseRepository
         if ($conditionsArr[0] === 'rating') {
             return $this->pagination($this->getStarScoring()->orderBy('book.id'));
         }
+        // author/category
         return $this->pagination(
             $this->query->whereRelation($conditionsArr[0], 'id', $conditionsArr[1])
         );
@@ -120,7 +121,11 @@ class BookRepository extends BaseRepository
         // and Formula: star1 (1) * numberOfStar1 + ... + star5 (5) * numberOfStar5
         // Then Join with Book Table
         $bookEach = Book::query()
-            ->selectRaw('book.id, ROUND(COUNT(review.id), 1) star_counting, ROUND(SUM(review.rating_start), 1) star_weighting')
+            ->selectRaw(
+                'book.id, 
+                ROUND(COUNT(review.id), 1) AS star_counting, 
+                ROUND(SUM(review.rating_start), 1) AS star_weighting'
+            )
             ->join('review', 'review.book_id', '=', 'book.id')
             ->groupBy('book.id');
 

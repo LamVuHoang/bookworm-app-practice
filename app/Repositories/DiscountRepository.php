@@ -13,9 +13,9 @@ class DiscountRepository extends BaseRepository
     }
     
 
-    public function getTopDiscount()
+    public function getTopDiscount($number)
     {
-        return $this->query->orderBy('discount_price', 'DESC')->limit(8)
+        return $this->query->orderBy('discount_price', 'DESC')->limit($number)
         ->with('book')->get();
     }
 }

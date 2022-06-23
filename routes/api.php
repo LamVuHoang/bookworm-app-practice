@@ -23,9 +23,11 @@ use App\Http\Controllers\ShopPageController;
 
 Route::prefix('home')->group(function () {
     // Get top 10 books with the most discount : DONE
-    Route::get('top_book_discount', [HomePageController::class, 'topBookDiscount']);
+    Route::get('get-top-discount/{number?}', [HomePageController::class, 'getTopDiscount'])
+        ->where('number', '[0-9]+');
     // Recommended: Get top 8 books with the most rating start : DONE
-    Route::get('top_most_rating_star', [HomePageController::class, 'topMostRatingStar']);
+    Route::get('top-most-rating-star/{number?}', [HomePageController::class, 'topMostRatingStar'])
+        ->where('number', '[0-9]+');
     // Popular: Get top 8 books with the most review : DONE
     Route::get('top_most_review', [HomePageController::class, 'topMostReview']);
 });

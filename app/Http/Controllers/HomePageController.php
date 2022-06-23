@@ -15,9 +15,9 @@ class HomePageController extends Controller
         $this->_discountRepository = $discountRepository;
     }
 
-    public function topBookDiscount()
+    public function getTopDiscount($number = 10)
     {
-        return response($this->_discountRepository->getTopDiscount());
+        return response($this->_discountRepository->getTopDiscount($number));
     }
 
     public function topMostRatingStar()
