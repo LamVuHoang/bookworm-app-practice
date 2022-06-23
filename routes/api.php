@@ -34,8 +34,10 @@ Route::prefix('home')->group(function () {
 });
 
 Route::prefix('shop')->group(function () {
-    // Sort book by on sale ????? Requirement File
-    // Sort by popularity ????? Requirement File
+
+    // Allow to sort by on sale: order by the most discount price1 – check 4.5.1 with descending
+    // mode and final price with ascending mode. Set it as default sort of the list page.
+    // Sort by popularity
     // Sort by real_price 
     // DONE
     Route::get('sort', [ShopPageController::class, 'sort']);

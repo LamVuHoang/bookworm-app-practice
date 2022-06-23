@@ -16,6 +16,7 @@ class BookRepository extends BaseRepository
 
     public function getById($bookId)
     {
+        //Get book with counting all the reviews, and counting each star per book
         return $this->query
             ->where('id', $bookId)
             ->withCount([
@@ -40,32 +41,13 @@ class BookRepository extends BaseRepository
             ->get();
     }
 
-    public function getReviewEachBook($bookId, $ratingStar)
-    {
-        if ($ratingStar) {
-            return $this->reviewPagination(
-                $this->query->find($bookId)->reviews()->where('rating_start', $ratingStar)
-            );
-        }
-        return $this->reviewPagination($this->query->find($bookId)->reviews());
-    }
-
     public function getRecommended($number)
     {
-        return $this->getStarScoring()->orderBy('star_scoring', 'DESC')->limit($number)->get();
+        return $this->calStarRating()->orderBy('star_scoring', 'DESC')->limit($number)->get();
     }
     public function getPopular($number)
     {
-        $finalPrice = $this->getFinalPriceRaw();
-
-        return $this->query
-            ->joinSub($finalPrice, 'sub', function ($join) {
-                $join->on('sub.id', '=', 'book.id');
-            })
-            ->select('*')
-            ->withCount(['reviews as review_count'])
-            ->orderBy('review_count', 'DESC')
-            ->orderBy('sub.final_price')
+        return $this->calPopularity()
             ->limit($number)
             ->get();
     }
@@ -73,68 +55,74 @@ class BookRepository extends BaseRepository
     public function filter($conditions)
     {
         $conditionsArr = explode(',', $conditions);
-        if ($conditionsArr[0] === 'rating') {
-            return $this->pagination($this->getStarScoring()->orderBy('book.id'));
+
+        $keySearch = $conditionsArr[0];
+        $params = array_slice($conditionsArr, 1);
+
+        if ($keySearch === 'rating') {
+            return $this->calStarRating()
+                ->where('star_scoring', '>=', $params[0])
+                ->get();
         }
+
         // author/category
-        return $this->pagination(
-            $this->query->whereRelation($conditionsArr[0], 'id', $conditionsArr[1])
-        );
+        return $this->query->whereHas($keySearch, function ($query) use ($params) {
+            $query->whereIn('id', $params);
+        })->get();
     }
 
     public function sort($conditions)
     {
-        if ($conditions) {
+        //Handle conditions of URL. Make default = sale,ASC
+        if (!$conditions) $conditionsArr = ['sale'];
+        else {
             $conditionsArr = explode(',', $conditions);
-            if (count($conditionsArr) === 1) array_push($conditionsArr, 'ASC');
-        } else {
-            $conditionsArr = ['', 'DESC'];
         }
+        if (count($conditionsArr) === 1) array_push($conditionsArr, 'ASC');
 
-        if ($conditionsArr[0] === 'sale') {
-            return $this->getFinalPriceFullTable()
-                ->orderBy('sub.discount_price', $conditionsArr[1])
+        //Handle Request
+        if ($conditionsArr[0] === 'price') {
+            return $this->calFinalPriceFull()
+                ->orderBy('sub.final_price', $conditionsArr[1])
                 ->get();
         } else if ($conditionsArr[0] === 'popularity') {
-            $finalPrice = $this->getFinalPriceRaw();
-
-            return $this->query
-                ->joinSub($finalPrice, 'sub', function ($join) {
-                    $join->on('sub.id', '=', 'book.id');
-                })
-                ->select('*')
-                ->withCount(['reviews as review_count'])
-                ->orderBy('review_count', $conditionsArr[1])
-                ->orderBy('sub.final_price')
-                ->get();
+            return $this->calPopularity($conditionsArr[1])->get();
         } else {
-            return $this->getFinalPriceFullTable()
+            // DEFAULT: SALE 
+            if (strtoupper($conditionsArr[1]) === 'DESC') {
+                return $this->calFinalPriceFull()
+                    ->orderBy('sub.discount_price', $conditionsArr[1])
+                    ->get();
+            }
+            return $this->calFinalPriceFull()
                 ->orderBy('sub.final_price', $conditionsArr[1])
                 ->get();
         }
     }
 
-    public function getStarScoring()
+    public function calStarRating()
     {
         // OPTION 1: Counting Number of Star each Book, 
         // and Formula: star1 (1) * numberOfStar1 + ... + star5 (5) * numberOfStar5
         // Then Join with Book Table
-        $bookEach = Book::query()
-            ->selectRaw(
+        $bookEach = DB::table(function ($query) {
+            $query->selectRaw(
                 'book.id, 
-                ROUND(COUNT(review.id), 1) AS star_counting, 
-                ROUND(SUM(review.rating_start), 1) AS star_weighting'
+                ROUND(COUNT(review.id), 1) star_counting, 
+                ROUND(SUM(review.rating_start), 1) star_weighting'
             )
-            ->join('review', 'review.book_id', '=', 'book.id')
-            ->groupBy('book.id');
-
-        return $this->query
-            ->joinSub($bookEach, 't1', function ($join) {
-                $join->on('t1.id', '=', 'book.id');
-            })
-            ->selectRaw('ROUND(t1.star_weighting / t1.star_counting, 1) AS star_scoring, book.*')
+                ->from('book')
+                ->join('review', 'review.book_id', 'book.id')
+                ->groupBy('book.id');
+        }, 't1')
+            ->selectRaw("t1.id, ROUND(t1.star_weighting/t1.star_counting, 1) star_scoring")
             ->whereNot('t1.star_weighting', null);
 
+        return $this->query
+            ->joinSub($bookEach, 't2', function ($join) {
+                $join->on('t2.id', '=', 'book.id');
+            })
+            ->select('*');
 
         // FROM OPTION 1 ==> OPTION 2: AVERAGE
         // return $this->query
@@ -143,7 +131,7 @@ class BookRepository extends BaseRepository
         //     ->groupBy('book.id');
     }
 
-    public function getFinalPriceRaw()
+    public function calFinalPriceRaw()
     {
         return DB::table('book')
             ->selectRaw(
@@ -163,24 +151,37 @@ class BookRepository extends BaseRepository
             ->join('discount', 'discount.book_id', '=', 'book.id');
     }
 
-    public function getFinalPriceFullTable()
+    public function calFinalPriceFull()
     {
-        $finalPrice =  $this->getFinalPriceRaw();
+        $finalPrice =  $this->calFinalPriceRaw();
 
         return DB::table('book')
             ->joinSub($finalPrice, 'sub', function ($join) {
                 $join->on('sub.id', '=', 'book.id');
             })
+            ->join('author', 'author.id', 'book.author_id')
             ->select('*');
     }
 
-    public function getSingle($id)
+    public function calPopularity($mode = 'DESC')
     {
-        return $this->query
-            ->leftJoin('review', 'book.id', 'review.book_id')
-            ->where('book.id', $id)
-            ->selectRaw('book.*, review.*')
-            ->withCount('reviews as all_review_count')
-            ->get();
+        $finalPrice = $this->calFinalPriceRaw();
+
+        $rawTable = $this->query
+            ->joinSub($finalPrice, 'sub', function ($join) {
+                $join->on('sub.id', '=', 'book.id');
+            })
+            ->join('author', 'author.id', 'book.author_id')
+            ->select('*')
+            ->withCount(['reviews as review_count']);
+
+        if (strtoupper($mode) === 'ASC') {
+            return $rawTable
+                ->orderBy('review_count')
+                ->orderBy('sub.final_price', 'DESC');
+        }
+        return $rawTable
+            ->orderBy('review_count', 'DESC')
+            ->orderBy('sub.final_price');
     }
 }
