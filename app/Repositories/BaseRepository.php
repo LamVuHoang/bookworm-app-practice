@@ -21,7 +21,7 @@ abstract class BaseRepository
     {
         return $query->paginate(self::$item_per_page);
     }
-    public function paginate_review($query)
+    public function reviewPagination($query)
     {
         return $query->paginate(self::$review_per_page);
     }

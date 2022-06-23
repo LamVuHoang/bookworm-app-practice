@@ -14,10 +14,10 @@ class BookRepository extends BaseRepository
         $this->query = Book::query();
     }
 
-    public function getById($bookID)
+    public function getById($bookId)
     {
         return $this->query
-            ->where('id', $bookID)
+            ->where('id', $bookId)
             ->withCount([
                 'reviews AS review_all_count',
                 'reviews AS one_star' => function (Builder $query) {
@@ -40,14 +40,14 @@ class BookRepository extends BaseRepository
             ->get();
     }
 
-    public function getReviewEachBook($bookID, $ratingStar)
+    public function getReviewEachBook($bookId, $ratingStar)
     {
         if ($ratingStar) {
-            return $this->paginate_review(
-                $this->query->find($bookID)->reviews()->where('rating_start', $ratingStar)
+            return $this->reviewPagination(
+                $this->query->find($bookId)->reviews()->where('rating_start', $ratingStar)
             );
         }
-        return $this->paginate_review($this->query->find($bookID)->reviews());
+        return $this->reviewPagination($this->query->find($bookId)->reviews());
     }
 
     public function getTopMostRatingStar()
@@ -119,12 +119,24 @@ class BookRepository extends BaseRepository
         // OPTION 1: Counting Number of Star each Book, 
         // and Formula: star1 (1) * numberOfStar1 + ... + star5 (5) * numberOfStar5
         // Then Join with Book Table
-
-        // FROM OPTION 1 ==> OPTION 2: AVERAGE
-        return $this->query
-            ->selectRaw('book.*, ROUND(AVG(review.rating_start), 1) star_scoring')
+        $bookEach = Book::query()
+            ->selectRaw('book.id, ROUND(COUNT(review.id), 1) star_counting, ROUND(SUM(review.rating_start), 1) star_weighting')
             ->join('review', 'review.book_id', '=', 'book.id')
             ->groupBy('book.id');
+
+        return $this->query
+            ->joinSub($bookEach, 't1', function ($join) {
+                $join->on('t1.id', '=', 'book.id');
+            })
+            ->selectRaw('ROUND(t1.star_weighting / t1.star_counting, 1) AS star_scoring, book.*')
+            ->whereNot('t1.star_weighting', null);
+
+
+        // FROM OPTION 1 ==> OPTION 2: AVERAGE
+        // return $this->query
+        //     ->selectRaw('book.*, ROUND(AVG(review.rating_start), 1) star_scoring')
+        //     ->join('review', 'review.book_id', '=', 'book.id')
+        //     ->groupBy('book.id');
     }
 
     public function getFinalPriceRaw()

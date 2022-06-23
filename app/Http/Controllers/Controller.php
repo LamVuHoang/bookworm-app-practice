@@ -17,9 +17,8 @@ class Controller extends BaseController
     protected BookRepository $_bookRepository;
     protected $item_per_page;
 
-    public function __construct(
-        BookRepository $bookRepository,
-    ) {
+    public function __construct(BookRepository $bookRepository)
+    {
         $this->_bookRepository = $bookRepository;
 
         BaseRepository::setItemPerPage(5);
