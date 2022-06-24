@@ -22,13 +22,13 @@ use App\Http\Controllers\ShopPageController;
 // });
 
 Route::prefix('home')->group(function () {
-    // Get top 10 books with the most discount : DONE
+    // Get top 10 books with the most discount : NOT YET, discount must be available at that time
     Route::get('get-top-discount/{number?}', [HomePageController::class, 'getTopDiscount'])
         ->where('number', '[0-9]+');
     // Recommended: Get top 8 books with the most rating start : DONE
     Route::get('get-recommended/{number?}', [HomePageController::class, 'getRecommended'])
         ->where('number', '[0-9]+');
-    // Popular: Get top 8 books with the most review : DONE
+    // Popular: Get top 8 books with the most review and lowest price: DONE
     Route::get('get-popular/{number?}', [HomePageController::class, 'getPopular'])
         ->where('number', '[0-9]+');
 });

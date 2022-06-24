@@ -82,7 +82,7 @@ class BookRepository extends BaseRepository
 
         //Handle Request
         if ($conditionsArr[0] === 'price') {
-            return $this->calFinalPriceFull()
+            return $this->calFinalPrice('withJoinSub')
                 ->orderBy('sub.final_price', $conditionsArr[1])
                 ->get();
         } else if ($conditionsArr[0] === 'popularity') {
@@ -90,11 +90,11 @@ class BookRepository extends BaseRepository
         } else {
             // DEFAULT: SALE 
             if (strtoupper($conditionsArr[1]) === 'DESC') {
-                return $this->calFinalPriceFull()
+                return $this->calFinalPrice('withJoinSub')
                     ->orderBy('sub.discount_price', $conditionsArr[1])
                     ->get();
             }
-            return $this->calFinalPriceFull()
+            return $this->calFinalPrice('withJoinSub')
                 ->orderBy('sub.final_price', $conditionsArr[1])
                 ->get();
         }
@@ -131,9 +131,9 @@ class BookRepository extends BaseRepository
         //     ->groupBy('book.id');
     }
 
-    public function calFinalPriceRaw()
+    public function calFinalPrice($mode = 'withoutJoinSub')
     {
-        return DB::table('book')
+        $rawTable = DB::table('book')
             ->selectRaw(
                 "book.id,
                 book.book_price book_price,
@@ -149,23 +149,21 @@ class BookRepository extends BaseRepository
                 book_price - discount_price final_price"
             )
             ->join('discount', 'discount.book_id', '=', 'book.id');
-    }
 
-    public function calFinalPriceFull()
-    {
-        $finalPrice =  $this->calFinalPriceRaw();
-
-        return DB::table('book')
-            ->joinSub($finalPrice, 'sub', function ($join) {
-                $join->on('sub.id', '=', 'book.id');
-            })
-            ->join('author', 'author.id', 'book.author_id')
-            ->select('*');
+        if ($mode === 'withJoinSub') {
+            return DB::table('book')
+                ->joinSub($rawTable, 'sub', function ($join) {
+                    $join->on('sub.id', '=', 'book.id');
+                })
+                ->join('author', 'author.id', 'book.author_id')
+                ->select('*');
+        }
+        return $rawTable;
     }
 
     public function calPopularity($mode = 'DESC')
     {
-        $finalPrice = $this->calFinalPriceRaw();
+        $finalPrice = $this->calFinalPrice();
 
         $rawTable = $this->query
             ->joinSub($finalPrice, 'sub', function ($join) {
