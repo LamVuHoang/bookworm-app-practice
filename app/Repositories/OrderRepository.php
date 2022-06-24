@@ -3,13 +3,13 @@
 namespace App\Repositories;
 
 use App\Repositories\BaseRepository;
-use App\Models\Discount;
+use App\Models\Order;
 
-class DiscountRepository extends BaseRepository
+class OrderRepository extends BaseRepository
 {
     public function __construct()
     {
-        $this->query = Discount::query();
+        $this->query = Order::query();
     }
 
 

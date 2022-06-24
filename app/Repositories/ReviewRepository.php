@@ -11,12 +11,18 @@ class ReviewRepository extends BaseRepository
     {
         $this->query = Review::query();
     }
-    public function getById($bookId, $ratingStar = null)
+    public function getById($bookId, $ratingStar)
     {
         if($ratingStar) {
-            return $this->query->where('book_id', $bookId)->where('rating_start', $ratingStar)->get();
+            return $this->query->where('book_id', $bookId)
+            ->where('rating_start', $ratingStar)
+            ->orderBy('review_date', 'ASC')
+            ->get();
         }
-        return $this->query->where('book_id', $bookId)->get();
+        return $this->query
+        ->where('book_id', $bookId)
+        ->orderBy('review_date', 'ASC')
+        ->get();
     }
     public function getTopRatingStar()
     {

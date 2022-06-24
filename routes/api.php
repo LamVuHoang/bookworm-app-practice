@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartPageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
@@ -22,7 +23,7 @@ use App\Http\Controllers\ShopPageController;
 // });
 
 Route::prefix('home')->group(function () {
-    // Get top 10 books with the most discount : NOT YET, discount must be available at that time
+    // Get top 10 books with the most discount : Sub_price vs Final_Price ????
     Route::get('get-top-discount/{number?}', [HomePageController::class, 'getTopDiscount'])
         ->where('number', '[0-9]+');
     // Recommended: Get top 8 books with the most rating start : DONE
@@ -45,28 +46,19 @@ Route::prefix('shop')->group(function () {
     // Filtering by Category:  ?conditions=category,2
     // Filtering by Author: ?conditions=author,2
     // Filtering by Rating Review
-    // DONE
+    // Validate Data Where in ???
     Route::get('filter', [ShopPageController::class, 'filter']);
 });
 
 Route::prefix('product')->group(function () {
     // Listing: List rating star, number of review, review_num each rating star: DONE
+    // Sorting: Date of review
     Route::get('{id?}', [ProductPageController::class, 'index'])->where('id', '[0-9]+');
     Route::get('{id_book}/rating/{rating_star?}', [ProductPageController::class, 'review'])
         ->where('id_book', '[0-9]+')->where('rating_star', '[1-5]');
-
-    // Sorting: Date of review
-
 });
 
 Route::prefix('cart')->group(function () {
     // CRUD order & order_item
-    //READ 
-
-    //CREATE
-
-    //UPDATE
-
-    //DELETE
-
+    // Route::resources('cart', [CartPageController::class]);
 });

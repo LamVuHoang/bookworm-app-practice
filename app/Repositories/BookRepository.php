@@ -60,15 +60,14 @@ class BookRepository extends BaseRepository
         $params = array_slice($conditionsArr, 1);
 
         if ($keySearch === 'rating') {
-            return $this->calStarRating()
-                ->where('star_scoring', '>=', $params[0])
-                ->get();
+            return $this->pagination($this->calStarRating()
+                ->where('star_scoring', '>=', $params[0]));
         }
 
         // author/category
-        return $this->query->whereHas($keySearch, function ($query) use ($params) {
+        return $this->pagination($this->query->whereHas($keySearch, function ($query) use ($params) {
             $query->whereIn('id', $params);
-        })->get();
+        }));
     }
 
     public function sort($conditions)
@@ -82,21 +81,18 @@ class BookRepository extends BaseRepository
 
         //Handle Request
         if ($conditionsArr[0] === 'price') {
-            return $this->calFinalPrice('withJoinSub')
-                ->orderBy('sub.final_price', $conditionsArr[1])
-                ->get();
+            return $this->pagination($this->calFinalPrice('withJoinSub')
+                ->orderBy('sub.final_price', $conditionsArr[1]));
         } else if ($conditionsArr[0] === 'popularity') {
-            return $this->calPopularity($conditionsArr[1])->get();
+            return $this->pagination($this->calPopularity($conditionsArr[1]));
         } else {
             // DEFAULT: SALE 
             if (strtoupper($conditionsArr[1]) === 'DESC') {
-                return $this->calFinalPrice('withJoinSub')
-                    ->orderBy('sub.discount_price', $conditionsArr[1])
-                    ->get();
+                return $this->pagination($this->calFinalPrice('withJoinSub')
+                    ->orderBy('sub.discount_price', $conditionsArr[1]));
             }
-            return $this->calFinalPrice('withJoinSub')
-                ->orderBy('sub.final_price', $conditionsArr[1])
-                ->get();
+            return $this->pagination($this->calFinalPrice('withJoinSub')
+                ->orderBy('sub.final_price', $conditionsArr[1]));
         }
     }
 
