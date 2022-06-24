@@ -60,15 +60,14 @@ class BookRepository extends BaseRepository
         $params = array_slice($conditionsArr, 1);
 
         if ($keySearch === 'rating') {
-            return $this->calStarRating()
-                ->where('star_scoring', '>=', $params[0])
-                ->get();
+            return $this->pagination($this->calStarRating()
+                ->where('star_scoring', '>=', $params[0]));
         }
 
         // author/category
-        return $this->query->whereHas($keySearch, function ($query) use ($params) {
+        return $this->pagination($this->query->whereHas($keySearch, function ($query) use ($params) {
             $query->whereIn('id', $params);
-        })->get();
+        }));
     }
 
     public function sort($conditions)
@@ -82,21 +81,18 @@ class BookRepository extends BaseRepository
 
         //Handle Request
         if ($conditionsArr[0] === 'price') {
-            return $this->calFinalPriceFull()
-                ->orderBy('sub.final_price', $conditionsArr[1])
-                ->get();
+            return $this->pagination($this->calFinalPrice('withJoinSub')
+                ->orderBy('sub.final_price', $conditionsArr[1]));
         } else if ($conditionsArr[0] === 'popularity') {
-            return $this->calPopularity($conditionsArr[1])->get();
+            return $this->pagination($this->calPopularity($conditionsArr[1]));
         } else {
             // DEFAULT: SALE 
             if (strtoupper($conditionsArr[1]) === 'DESC') {
-                return $this->calFinalPriceFull()
-                    ->orderBy('sub.discount_price', $conditionsArr[1])
-                    ->get();
+                return $this->pagination($this->calFinalPrice('withJoinSub')
+                    ->orderBy('sub.discount_price', $conditionsArr[1]));
             }
-            return $this->calFinalPriceFull()
-                ->orderBy('sub.final_price', $conditionsArr[1])
-                ->get();
+            return $this->pagination($this->calFinalPrice('withJoinSub')
+                ->orderBy('sub.final_price', $conditionsArr[1]));
         }
     }
 
@@ -131,9 +127,9 @@ class BookRepository extends BaseRepository
         //     ->groupBy('book.id');
     }
 
-    public function calFinalPriceRaw()
+    public function calFinalPrice($mode = 'withoutJoinSub')
     {
-        return DB::table('book')
+        $rawTable = DB::table('book')
             ->selectRaw(
                 "book.id,
                 book.book_price book_price,
@@ -149,23 +145,22 @@ class BookRepository extends BaseRepository
                 book_price - discount_price final_price"
             )
             ->join('discount', 'discount.book_id', '=', 'book.id');
-    }
 
-    public function calFinalPriceFull()
-    {
-        $finalPrice =  $this->calFinalPriceRaw();
+        if ($mode === 'withJoinSub') {
+            return DB::table('book')
+                ->joinSub($rawTable, 'sub', function ($join) {
+                    $join->on('sub.id', '=', 'book.id');
+                })
+                ->join('author', 'author.id', 'book.author_id')
+                ->select('*');
+        }
 
-        return DB::table('book')
-            ->joinSub($finalPrice, 'sub', function ($join) {
-                $join->on('sub.id', '=', 'book.id');
-            })
-            ->join('author', 'author.id', 'book.author_id')
-            ->select('*');
+        return $rawTable;
     }
 
     public function calPopularity($mode = 'DESC')
     {
-        $finalPrice = $this->calFinalPriceRaw();
+        $finalPrice = $this->calFinalPrice();
 
         $rawTable = $this->query
             ->joinSub($finalPrice, 'sub', function ($join) {

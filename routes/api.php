@@ -22,7 +22,7 @@ use App\Http\Controllers\ShopPageController;
 // });
 
 Route::prefix('home')->group(function () {
-    // Get top 10 books with the most discount : DONE
+    // Get top 10 books with the most discount : Sub_price vs Final_Price ????
     Route::get('get-top-discount/{number?}', [HomePageController::class, 'getTopDiscount'])
         ->where('number', '[0-9]+');
     // Recommended: Get top 8 books with the most rating start : DONE
@@ -45,7 +45,7 @@ Route::prefix('shop')->group(function () {
     // Filtering by Category:  ?conditions=category,2
     // Filtering by Author: ?conditions=author,2
     // Filtering by Rating Review
-    // DONE
+    // Validate Data in ???
     Route::get('filter', [ShopPageController::class, 'filter']);
 });
 
@@ -62,7 +62,7 @@ Route::prefix('product')->group(function () {
 Route::prefix('cart')->group(function () {
     // CRUD order & order_item
     //READ 
-
+    
     //CREATE
 
     //UPDATE
