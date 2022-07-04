@@ -1,37 +1,11 @@
 import { Container, Row, Col } from "react-bootstrap";
 import CardItem from "./CardItem";
+import MultipleItem from "./MultipleItem";
 
-export default function TopBooks() {
+export default function TopBooks(props) {
     return (
         <Container>
-            <Row>
-                <Col>
-                    <CardItem />
-                </Col>
-                <Col>
-                    <CardItem />
-                </Col>
-                <Col>
-                    <CardItem />
-                </Col>
-                <Col>
-                    <CardItem />
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <CardItem />
-                </Col>
-                <Col>
-                    <CardItem />
-                </Col>
-                <Col>
-                    <CardItem />
-                </Col>
-                <Col>
-                    <CardItem />
-                </Col>
-            </Row>
+            <MultipleItem column="4" row="2" />
         </Container>
     );
 }

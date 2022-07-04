@@ -1,27 +1,19 @@
 import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import CartItem from './CardItem';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import MultipleItem from './MultipleItem';
 
+const multipleCarouselItem = (number) => {
+    let item = [];
+    for (let i = 0; i < number; i++) {
+        item.push(
+            <Carousel.Item>
+                <MultipleItem row="1" column="4" />
+            </Carousel.Item>
+        );
+    }
 
-// function CarouselItem() {
-//     return (
-//         <Carousel.Item>
-//             <Row>
-//                 <Col>
-//                     <CartItem />
-//                 </Col>
-//                 <Col>
-//                     <CartItem />
-//                 </Col>
-//                 <Col>
-//                     <CartItem />
-//                 </Col>
-//             </Row>
-//         </Carousel.Item>
-//     );
-// }
+    return item;
+}
 
 export default function ControlledCarousel() {
     const [index, setIndex] = useState(0);
@@ -32,45 +24,7 @@ export default function ControlledCarousel() {
 
     return (
         <Carousel activeIndex={index} onSelect={handleSelect} variant="dark">
-            <Carousel.Item>
-                <Row>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                </Row>
-            </Carousel.Item>
-            <Carousel.Item>
-                <Row>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                </Row>
-            </Carousel.Item>
-            <Carousel.Item>
-                <Row>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                    <Col>
-                        <CartItem />
-                    </Col>
-                </Row>
-            </Carousel.Item>
+            {multipleCarouselItem(3)}
         </Carousel>
     );
 }
