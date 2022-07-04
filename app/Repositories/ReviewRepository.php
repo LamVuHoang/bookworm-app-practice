@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\ReviewResource;
 use App\Models\Review;
 use App\Repositories\BaseRepository;
 
@@ -11,21 +12,21 @@ class ReviewRepository extends BaseRepository
     {
         $this->query = Review::query();
     }
-    public function getById($bookId, $ratingStar)
+    public function getById($bookId, $ratingStar, $conditions)
     {
-        if($ratingStar) {
-            return $this->query->where('book_id', $bookId)
-            ->where('rating_start', $ratingStar)
-            ->orderBy('review_date', 'ASC')
-            ->get();
+        if (!$conditions) $conditions = 'DESC';
+        // return $conditions;
+        if ($ratingStar) {
+            $review = $this->query
+                ->where('book_id', $bookId)
+                ->where('rating_start', $ratingStar)
+                ->orderBy('review_date', $conditions);
+        } else {
+            $review = $this->query
+                ->where('book_id', $bookId)
+                ->orderBy('review_date', $conditions);
         }
-        return $this->query
-        ->where('book_id', $bookId)
-        ->orderBy('review_date', 'ASC')
-        ->get();
-    }
-    public function getTopRatingStar()
-    {
         
+        return ReviewResource::collection($review->get());
     }
 }

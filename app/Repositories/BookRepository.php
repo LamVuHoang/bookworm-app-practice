@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Repositories\BaseRepository;
 use App\Models\Book;
@@ -17,15 +18,16 @@ class BookRepository extends BaseRepository
 
     public function getById($bookId)
     {
-        $getById = $this->query->where('id', $bookId);
+        // $getById = $this->query->where('id', $bookId);
 
-        return BookResource::collection($getById->paginate(parent::$item_per_page));
+        // return $getById->get();
+        // return BookResource::collection($getById->paginate(parent::$item_per_page));
     }
 
     public function getByIdWithReviewCounting($bookId)
     {
         //Get book with counting all the reviews, and counting each star per book
-        return $this->query
+        $bookWithReviewCounting = $this->query
             ->where('id', $bookId)
             ->withCount([
                 'reviews AS review_all_count',
@@ -46,6 +48,8 @@ class BookRepository extends BaseRepository
                 },
             ])
             ->groupBy('book.id');
+
+        return new BookCollection($bookWithReviewCounting->get());
     }
 
     public function getRecommended($number)
@@ -108,26 +112,4 @@ class BookRepository extends BaseRepository
                 ->orderBy('sub.final_price', $conditionsArr[1])->get();
         }
     }
-
-    // public function calPopularity($mode = 'DESC')
-    // {
-    //     $finalPrice = $this->query->finalPrice();
-
-    //     $rawTable = $this->query
-    //         ->joinSub($finalPrice, 'sub', function ($join) {
-    //             $join->on('sub.id', '=', 'book.id');
-    //         })
-    //         ->join('author', 'author.id', 'book.author_id')
-    //         ->select('*')
-    //         ->withCount(['reviews as review_count']);
-
-    //     if (strtoupper($mode) === 'ASC') {
-    //         return $rawTable
-    //             ->orderBy('review_count')
-    //             ->orderBy('sub.final_price', 'DESC');
-    //     }
-    //     return $rawTable
-    //         ->orderBy('review_count', 'DESC')
-    //         ->orderBy('sub.final_price');
-    // }
 }
