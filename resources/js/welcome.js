@@ -1,16 +1,11 @@
-import React, {Component} from 'react';
-import '../css/app.css';
+import React, { Component } from 'react';
+import Header from './components/Header';
 
 class Welcome extends Component {
     render() {
         return (
             <main>
-                <section className="content">
-                    <div className="small-welcome-text">AMA</div>
-                    <div className="welcome-text">
-                        Welcome to <span>Book</span> <span>Worm</span>
-                    </div>
-                </section>
+                <Header />
             </main>
         );
     }
