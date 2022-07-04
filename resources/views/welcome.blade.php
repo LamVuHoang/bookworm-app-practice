@@ -10,7 +10,6 @@
 <body class="antialiased">
     <div id="root"></div>
     <script src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ asset('js/welcome.js') }}"></script>
 </body>
 
 </html>
