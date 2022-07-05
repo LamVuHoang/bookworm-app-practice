@@ -1,8 +1,13 @@
 import { Container, Col, Row } from "react-bootstrap";
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function About() {
     return (
         <>
+            <Header />
+            <br />
+
             <Container>
                 <Row>
                     <Col>
@@ -72,6 +77,9 @@ export default function About() {
                     </Col>
                 </Row>
             </Container>
+
+            <br />
+            <Footer />
         </>
     );
 }

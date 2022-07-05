@@ -4,10 +4,15 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import CustomPagination from "../components/CustomPagination";
 import Accordion from 'react-bootstrap/Accordion';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function Shop() {
     return (
         <>
+            <Header />
+            <br />
+
             <Container>
                 <Row>
                     <Col>
@@ -143,6 +148,9 @@ export default function Shop() {
                     </Col>
                 </Row>
             </Container>
+
+            <br />
+            <Footer />
         </>
     );
 }

@@ -4,10 +4,15 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Badge from 'react-bootstrap/Badge';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function Product() {
     return (
         <>
+            <Header />
+            <br />
+
             <Container>
                 <Row>
                     <Col>
@@ -117,6 +122,9 @@ export default function Product() {
                     </Col>
                 </Row>
             </Container>
+
+            <br />
+            <Footer />
         </>
     );
 }

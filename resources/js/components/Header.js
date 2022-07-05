@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Routes, Route, Link, NavLink } from "react-router-dom";
 
 export default function Header() {
     return (
@@ -13,13 +14,13 @@ export default function Header() {
                     <Nav className="me-auto">
                     </Nav>
                     <Nav>
-                        <Nav.Link href="#deets">Home</Nav.Link>
-                        <Nav.Link eventKey={2} href="#memes">
+                        <NavLink to={'/'}>Home</NavLink>
+                        <NavLink to={'/shop'}>
                             Shop
-                        </Nav.Link>
-                        <Nav.Link>About</Nav.Link>
-                        <Nav.Link>Cart (0)</Nav.Link>
-                        <Nav.Link>Sign In</Nav.Link>
+                        </NavLink>
+                        <NavLink to={'/about'}>About</NavLink>
+                        <NavLink to={'/cart'}>Cart (0)</NavLink>
+                        {/* <NavLink to={'/signin'}>Sign In</NavLink> */}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

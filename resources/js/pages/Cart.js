@@ -4,10 +4,15 @@ import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function Cart() {
     return (
         <>
+            <Header />
+            <br />
+
             <Container>
                 <Row>
                     <Col>
@@ -47,7 +52,7 @@ export default function Cart() {
                                     <td>
                                         <InputGroup>
                                             <Button variant="outline-success">-</Button>
-                                            <Form.Control className="text-center" value="8"/>
+                                            <Form.Control className="text-center" value="8" />
                                             <Button variant="outline-success">+</Button>
                                         </InputGroup>
                                     </td>
@@ -72,6 +77,9 @@ export default function Cart() {
                     </Col>
                 </Row>
             </Container>
+
+            <br />
+            <Footer />
         </>
     );
 }
