@@ -6,7 +6,7 @@ const cardOneRow = (column) => {
     let elements = [];
     for (let col = 0; col < column; col++) {
         elements.push(
-            <Col>
+            <Col sm={12} md={3}>
                 <CardItem />
             </Col>
         );
