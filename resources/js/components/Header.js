@@ -1,14 +1,17 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Routes, Route, Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Image from 'react-bootstrap/Image';
+import IMAGES from '../../assets';
 
 export default function Header() {
     return (
-        <Navbar collapseOnSelect expand="lg" bg="danger" variant="dark" className="navbar-fixed-top">
+        <Navbar collapseOnSelect expand="lg" bg="light" variant="dark" className="navbar-fixed-top">
             <Container fluid>
-                <Navbar.Brand href="#home">BookWorm</Navbar.Brand>
+                <Navbar.Brand href="#home">
+                    <Image src={IMAGES.bookCover} fluid />
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
