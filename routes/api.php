@@ -48,17 +48,22 @@ Route::prefix('shop')->group(function () {
     // Filtering by Rating Review
     // Validate Data Where in ???
     Route::get('filter', [ShopPageController::class, 'filter']);
+
+    // Fetch Author & Category name 
+    Route::get('get-author-list', [ShopPageController::class, 'getAuthorList']);
+    Route::get('get-category-list', [ShopPageController::class, 'getCategoryList']);
 });
 
 Route::prefix('product')->group(function () {
     // Listing: List rating star, number of review, review_num each rating star: DONE
     // Sorting: Date of review
     Route::get('{id?}', [ProductPageController::class, 'index'])->where('id', '[0-9]+');
-    Route::get('{id_book}/rating/{rating_star?}', [ProductPageController::class, 'review'])
+    Route::get('{id_book}/rating/{conditions?}', [ProductPageController::class, 'review']);
+    Route::get('{id_book}/rating/{rating_star?}/{conditions?}', [ProductPageController::class, 'review'])
         ->where('id_book', '[0-9]+')->where('rating_star', '[1-5]');
 });
 
-Route::prefix('cart')->group(function () {
-    // CRUD order & order_item
-    // Route::resources('cart', [CartPageController::class]);
-});
+// Route::apiResource('cart', CartPageController::class);
+
+// Route::apiResource('review', CartPageController::class);
+
