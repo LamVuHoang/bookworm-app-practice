@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -7,122 +8,148 @@ import Button from 'react-bootstrap/Button';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Card from 'react-bootstrap/Card';
-import axios from 'axios';
 import IMAGES from '../../assets';
+import '../../css/myStyle.css';
 
-export default function Home() {
-    // On Sale Book
-    const [onSaleBook, setOnSaleBook] = useState(0);
-    useEffect(async () => {
-        await axios
+export default class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            onSale: [],
+            recommendedBook: [],
+            popularBook: [],
+            isRecommendedBook: true
+        };
+    }
+
+    componentDidMount() {
+        this.getOnSaleBook();
+        this.getRecommemdedBook();
+        this.getPopularBook();
+    }
+
+    getOnSaleBook = () => {
+        axios
             .get('http://127.0.0.1:8000/api/home/get-top-discount/8')
-            .then((response) => {
-                setOnSaleBook(response.data);
+            .then(response => {
+                this.setState({ onSale: response.data })
+            })
+            .catch(error => {
+                console.log(error)
             });
-    }, []);
+    }
 
-    // Recommended Book
-    const [recommendedBook, setRecommendedBook] = useState(0);
-    useEffect(async () => {
-        await axios
+    getRecommemdedBook = () => {
+        axios
             .get('http://127.0.0.1:8000/api/home/get-recommended/8')
-            .then((response) => {
-                setRecommendedBook(response.data);
+            .then(response => {
+                this.setState({ recommendedBook: response.data })
+            })
+            .catch(error => {
+                console.log(error);
             });
-    }, []);
+    }
 
-    // Popular Book
-    const [popularBook, setPopularBook] = useState(0);
-    useEffect(async () => {
-        await axios
+    getPopularBook = () => {
+        axios
             .get('http://127.0.0.1:8000/api/home/get-popular/8')
-            .then((response) => {
-                setPopularBook(response.data);
+            .then(response => {
+                this.setState({ popularBook: response.data })
+            })
+            .catch(error => {
+                console.log(error);
             });
-    }, []);
+    }
+    render() {
+        return (
+            <>
+                <Header />
+                <br />
 
-    return (
-        <>
-            <Header />
-            <br />
-
-            <Container>
-                <Row>
-                    <Col className='h3'>On Sale</Col>
-                    <Col className='text-right d-flex justify-content-end'>
-                        <Button variant="outline-success" className="text-right">View All</Button>
-                    </Col>
-                </Row>
                 <Container>
-                    <Carousel>
-                        <Carousel.Item>
-                            <Row>
-                                {onSaleBook && onSaleBook.length > 0 && onSaleBook.map(item => (
-                                    <Col>
-                                        <Card>
-                                            <Card.Img variant="top" src={
-                                                IMAGES.hasOwnProperty(item.book.book_cover_photo) ?
-                                                    IMAGES[item.book.book_cover_photo] :
-                                                    IMAGES['default']
-                                            } fluid />
-                                            <Card.Body>
-                                                <Card.Title>{item.book.book_title}</Card.Title>
-                                                <Card.Text>
-                                                    {item.book.author_id}
-                                                </Card.Text>
-                                                <Button variant="primary">Go somewhere</Button>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                ))}
-                            </Row>
-                        </Carousel.Item>
-                    </Carousel>
-                </Container>
-            </Container>
-
-            <br />
-
-            <Container>
-                <Row className='text-center'>
-                    <Col className='h3'>Featured Books</Col>
-                </Row>
-                <Row>
-                    <Col className='text-right d-flex justify-content-end'>
-                        <Button variant="outline-success"
-                        >Recommended</Button>
-                    </Col>
-                    <Col>
-                        <Button variant="outline-success">Popular</Button>
-                    </Col>
-                </Row>
-            </Container>
-
-            <Container>
-                <Row>
-                    {recommendedBook && recommendedBook.length > 0 && recommendedBook.map(item => (
-                        <Col xs={3}>
-                            <Card>
-                                <Card.Img variant="top" src={
-                                    IMAGES.hasOwnProperty(item.book_cover_photo) ?
-                                        IMAGES[item.book_cover_photo] :
-                                        IMAGES['default']
-                                } fluid />
-                                <Card.Body>
-                                    <Card.Title>{item.book_title}</Card.Title>
-                                    <Card.Text>
-                                        {item.author_id}
-                                    </Card.Text>
-                                    <Button variant="primary">Go somewhere</Button>
-                                </Card.Body>
-                            </Card>
+                    <Row>
+                        <Col className='h3'>On Sale</Col>
+                        <Col className='text-right d-flex justify-content-end'>
+                            <Button variant="outline-success" className="text-right">View All</Button>
                         </Col>
-                    ))}
-                </Row>
-            </Container>
+                    </Row>
+                    <Container>
+                        <Carousel>
+                            <Carousel.Item>
+                                <Row>
+                                    {this.state.onSale.map(item => (
+                                        <Col>
+                                            <Card>
+                                                <Card.Img variant="top" src={
+                                                    IMAGES.hasOwnProperty(item.book.book_cover_photo) ?
+                                                        IMAGES[item.book.book_cover_photo] :
+                                                        IMAGES['default']
+                                                } fluid="true" />
+                                                <Card.Body>
+                                                    <Card.Title>{item.book.book_title}</Card.Title>
+                                                    <Card.Text>
+                                                        {item.book.author_id}
+                                                    </Card.Text>
+                                                    <Button variant="primary">Go somewhere</Button>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </Carousel.Item>
+                        </Carousel>
+                    </Container>
+                </Container>
 
-            <br />
-            <Footer />
-        </>
-    );
+                <br />
+
+                <Container>
+                    <Row className='text-center'>
+                        <Col className='h3'>Featured Books</Col>
+                    </Row>
+                    <Row>
+                        <Col className='text-right d-flex justify-content-end'>
+                            <Button variant="outline-success"
+                                onClick={() => {
+                                    this.setState({ isRecommendedBook: true })
+                                }}>Recommended</Button>
+                        </Col>
+                        <Col>
+                            <Button variant="outline-success"
+                                onClick={() => {
+                                    this.setState({ isRecommendedBook: false })
+                                }}>Popular</Button>
+                        </Col>
+                    </Row>
+                </Container>
+
+                <Container>
+                    <Row>
+                        {(this.state.isRecommendedBook == true ? this.state.recommendedBook
+                            : this.state.popularBook).map(item => (
+                                <Col xs={3}>
+                                    <Card>
+                                        <Card.Img variant="top" src={
+                                            IMAGES.hasOwnProperty(item.book_cover_photo) ?
+                                                IMAGES[item.book_cover_photo] :
+                                                IMAGES['default']
+                                        } fluid="true" />
+                                        <Card.Body>
+                                            <Card.Title>{item.book_title}</Card.Title>
+                                            <Card.Text>
+                                                {item.author_id}
+                                            </Card.Text>
+                                            <Button variant="primary">Go somewhere</Button>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            ))}
+                    </Row>
+                </Container>
+
+                <br />
+                <Footer />
+            </>
+        );
+    }
 }
