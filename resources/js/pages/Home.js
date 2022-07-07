@@ -28,6 +28,7 @@ export default class Home extends React.Component {
         this.getPopularBook();
     }
 
+
     getOnSaleBook = () => {
         axios
             .get('http://127.0.0.1:8000/api/home/get-top-discount/8')
@@ -63,6 +64,7 @@ export default class Home extends React.Component {
     render() {
         return (
             <>
+                {/* {console.log(this.state.onSale)} */}
                 <Header />
                 <br />
 
@@ -88,7 +90,7 @@ export default class Home extends React.Component {
                                                 <Card.Body>
                                                     <Card.Title>{item.book.book_title}</Card.Title>
                                                     <Card.Text>
-                                                        {item.book.author_id}
+                                                        {item.book.author.author_name}
                                                     </Card.Text>
                                                     <Button variant="primary">Go somewhere</Button>
                                                 </Card.Body>
@@ -128,7 +130,7 @@ export default class Home extends React.Component {
                         {(this.state.isRecommendedBook == true ? this.state.recommendedBook
                             : this.state.popularBook).map(item => (
                                 <Col xs={3}>
-                                    <Card>
+                                    <Card className='myItem'>
                                         <Card.Img variant="top" src={
                                             IMAGES.hasOwnProperty(item.book_cover_photo) ?
                                                 IMAGES[item.book_cover_photo] :

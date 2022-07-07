@@ -19,7 +19,10 @@ class BookResource extends JsonResource
             'id' => $this->id,
             'book_title' => $this->book_title,
             'book_price' => $this->book_price,
-            'reviews' => $this->whenLoaded('reviews', ReviewResource::collection($this->reviews))
-        ];
+            'book_cover_photo' => $this->book_cover_photo,
+            'reviews' => $this->whenLoaded('reviews', ReviewResource::collection($this->reviews)),
+            'author' => new AuthorResource($this->author),
+            // 'discount' => new DiscountResource($this->discount)
+        ]; 
     }
 }

@@ -17,12 +17,12 @@ export default function Header() {
                     <Nav className="me-auto">
                     </Nav>
                     <Nav>
-                        <NavLink to={'/'}>Home</NavLink>
-                        <NavLink to={'/shop'}>
+                        <Nav.Link><NavLink to={'/'}>Home</NavLink></Nav.Link>
+                        <Nav.Link><NavLink to={'/shop'}>
                             Shop
-                        </NavLink>
-                        <NavLink to={'/about'}>About</NavLink>
-                        <NavLink to={'/cart'}>Cart (0)</NavLink>
+                        </NavLink></Nav.Link>
+                        <Nav.Link><NavLink to={'/about'}>About</NavLink></Nav.Link>
+                        <Nav.Link><NavLink to={'/cart'}>Cart (0)</NavLink></Nav.Link>
                         {/* <NavLink to={'/signin'}>Sign In</NavLink> */}
                     </Nav>
                 </Navbar.Collapse>

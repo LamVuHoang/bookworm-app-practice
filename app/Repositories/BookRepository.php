@@ -54,8 +54,11 @@ class BookRepository extends BaseRepository
 
     public function getRecommended($number)
     {
-        return $this->query->starRating()
-            ->orderBy('star_scoring', 'DESC')->limit($number)->get();
+        $table = $this->query->starRating()
+            ->orderBy('star_scoring', 'DESC')->limit($number);
+
+            return $table->get();
+        return BookResource::collection($table->get());
     }
     
     public function getPopular($number)
@@ -73,14 +76,14 @@ class BookRepository extends BaseRepository
         $params = array_slice($conditionsArr, 1);
 
         if ($keySearch === 'rating') {
-            return $this->pagination($this->query->starRating()
-                ->where('star_scoring', '>=', $params[0]));
+            return $this->query->starRating()
+                ->where('star_scoring', '>=', $params[0])->get();
         }
 
         // author/category
-        return $this->pagination($this->query->whereHas($keySearch, function ($query) use ($params) {
+        return $this->query->whereHas($keySearch, function ($query) use ($params) {
             $query->whereIn('id', $params);
-        }));
+        })->get();
     }
 
     public function sort($conditions)
@@ -91,7 +94,6 @@ class BookRepository extends BaseRepository
             $conditionsArr = explode(',', $conditions);
         }
         if (count($conditionsArr) === 1) array_push($conditionsArr, 'ASC');
-        // return $conditionsArr;
 
         //Handle Request
         if ($conditionsArr[0] === 'price') {

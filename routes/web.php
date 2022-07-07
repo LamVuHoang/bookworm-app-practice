@@ -18,16 +18,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/shop', function () {
-    return view('welcome');
+Route::prefix('shop')->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/category/{id}', function () {
+        return view('welcome');
+    });
+    Route::get('/author/{id}', function () {
+        return view('welcome');
+    });
+    Route::get('/rating/{rating_start}', function () {
+        return view('welcome');
+    });
 });
+
 
 Route::get('about', function () {
     return view('welcome');
 });
 
-Route::get('/cart', function () {
+Route::get('cart', function () {
     return view('welcome');
 });
-
-
