@@ -22,7 +22,7 @@ class DiscountResource extends JsonResource
                 date('M d, Y H:i:s', strtotime($this->discount_end_date)) : 'null',
             'discount_price' => $this->discount_price,
             'sub_price' => $this->sub_price,
-            'book' => new BookResource($this->book)
+            'book' => $this->whenLoaded('book', BookResource::make($this->book))
         ];
     }
 }

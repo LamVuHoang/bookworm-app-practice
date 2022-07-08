@@ -3,30 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\BookRepository;
-use App\Repositories\DiscountRepository;
+use App\Repositories\WithDiscountRepository;
+use App\Repositories\WithReviewRepository;
 use Illuminate\Http\Request;
 
 class HomePageController extends Controller
 {
-    private $_discountRepository;
-    public function __construct(BookRepository $bookRepository, DiscountRepository $discountRepository)
-    {
+    private $_withDiscountRepository;
+    private $_withReviewRepository;
+    public function __construct(
+        BookRepository $bookRepository,
+        WithDiscountRepository $withDiscountRepository,
+        WithReviewRepository $withReviewRepository
+    ) {
         parent::__construct($bookRepository);
-        $this->_discountRepository = $discountRepository;
+        $this->_withDiscountRepository = $withDiscountRepository;
+        $this->_withReviewRepository = $withReviewRepository;
     }
 
     public function getTopDiscount($number = 10)
     {
-        return response($this->_discountRepository->getTopDiscount($number));
+        return response($this->_withDiscountRepository->getTopDiscount($number));
     }
 
     public function getRecommended($number = 8)
     {
-        return response($this->_bookRepository->getRecommended($number));
+        return response($this->_withReviewRepository->getRecommended($number));
     }
 
     public function getPopular($number = 8)
     {
         return response($this->_bookRepository->getPopular($number));
+    }
+
+    public function test()
+    {
+        return response($this->_bookRepository->test());
     }
 }

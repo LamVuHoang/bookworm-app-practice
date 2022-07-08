@@ -51,19 +51,14 @@ class BookRepository extends BaseRepository
 
         return new BookCollection($bookWithReviewCounting->get());
     }
-
-    public function getRecommended($number)
-    {
-        $table = $this->query->starRating()
-            ->orderBy('star_scoring', 'DESC')->limit($number);
-
-            return $table->get();
-        return BookResource::collection($table->get());
-    }
     
     public function getPopular($number)
     {
-        return $this->query->popularity()
+        return $this->query->massItemInformation()
+            ->whereNot('discount_price', 0)
+            ->whereNot('review_counting', 0)
+            ->orderBy('review_counting', 'desc')
+            ->orderBy('discount_price')
             ->limit($number)
             ->get();
     }
@@ -113,5 +108,10 @@ class BookRepository extends BaseRepository
             return $this->query->finalPrice('withJoinSub')
                 ->orderBy('sub.final_price', $conditionsArr[1])->get();
         }
+    }
+
+    public function test()
+    {
+        return $this->query->massItemInformation()->paginate(10);
     }
 }
