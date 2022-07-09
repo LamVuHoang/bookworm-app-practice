@@ -4,8 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Header from '../common/Header';
+import Footer from '../common/Footer';
 
 export default function Cart() {
     return (

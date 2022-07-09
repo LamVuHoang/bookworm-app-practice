@@ -5,11 +5,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Carousel from 'react-bootstrap/Carousel';
 import Button from 'react-bootstrap/Button';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Card from 'react-bootstrap/Card';
+import Header from '../common/Header';
+import Footer from '../common/Footer';
+import CardItem from '../common/CardItem';
 import IMAGES from '../../assets';
 import '../../css/myStyle.css';
+import { Link } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -80,21 +82,8 @@ export default class Home extends React.Component {
                             <Carousel.Item>
                                 <Row>
                                     {this.state.onSale.map(item => (
-                                        <Col>
-                                            <Card>
-                                                <Card.Img variant="top" src={
-                                                    IMAGES.hasOwnProperty(item.book.book_cover_photo) ?
-                                                        IMAGES[item.book.book_cover_photo] :
-                                                        IMAGES['default']
-                                                } fluid="true" />
-                                                <Card.Body>
-                                                    <Card.Title>{item.book.book_title}</Card.Title>
-                                                    <Card.Text>
-                                                        {item.book.author.author_name}
-                                                    </Card.Text>
-                                                    <Button variant="primary">Go somewhere</Button>
-                                                </Card.Body>
-                                            </Card>
+                                        <Col xs={12} sm={6} md={3}>
+                                            <CardItem data={item} />
                                         </Col>
                                     ))}
                                 </Row>
@@ -130,20 +119,7 @@ export default class Home extends React.Component {
                         {(this.state.isRecommendedBook == true ? this.state.recommendedBook
                             : this.state.popularBook).map(item => (
                                 <Col xs={3}>
-                                    <Card className='myItem'>
-                                        <Card.Img variant="top" src={
-                                            IMAGES.hasOwnProperty(item.book_cover_photo) ?
-                                                IMAGES[item.book_cover_photo] :
-                                                IMAGES['default']
-                                        } fluid="true" />
-                                        <Card.Body>
-                                            <Card.Title>{item.book_title}</Card.Title>
-                                            <Card.Text>
-                                                {item.author_id}
-                                            </Card.Text>
-                                            <Button variant="primary">Go somewhere</Button>
-                                        </Card.Body>
-                                    </Card>
+                                    <CardItem data={item} />
                                 </Col>
                             ))}
                     </Row>
