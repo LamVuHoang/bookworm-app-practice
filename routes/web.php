@@ -22,13 +22,10 @@ Route::prefix('shop')->group(function () {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/category/{id}', function () {
-        return view('welcome');
-    });
-    Route::get('/author/{id}', function () {
-        return view('welcome');
-    });
-    Route::get('/rating/{rating_start}', function () {
+});
+
+Route::prefix('product')->group(function () {
+    Route::get('{id}', function () {
         return view('welcome');
     });
 });

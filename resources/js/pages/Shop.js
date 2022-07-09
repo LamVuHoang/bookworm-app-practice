@@ -6,10 +6,11 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
-import CustomPagination from "../components/CustomPagination";
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import CustomPagination from "../common/CustomPagination";
+import Header from '../common/Header';
+import Footer from '../common/Footer';
 import IMAGES from '../../assets';
+import CardItem from '../common/CardItem';
 import '../../css/myStyle.css';
 
 export default class Shop extends React.Component {
@@ -131,7 +132,7 @@ export default class Shop extends React.Component {
                                             this.filter('author', item.id)
                                         }}>
                                             {/* <Link to={item.id}> */}
-                                                {item.author_name}
+                                            {item.author_name}
                                             {/* </Link> */}
                                         </ListGroup.Item>
                                     ))}
@@ -148,7 +149,7 @@ export default class Shop extends React.Component {
                                             this.filter('rating', item)
                                         }}>
                                             {/* <Link to={item}> */}
-                                                {item} star
+                                            {item} star
                                             {/* </Link> */}
                                         </ListGroup.Item>
                                     ))}
@@ -163,25 +164,27 @@ export default class Shop extends React.Component {
                                 <Col className="text-right d-flex justify-content-end">
                                     <Dropdown className="d-inline mx-2">
                                         <Dropdown.Toggle id="dropdown-autoclose-true">
-                                            Default Dropdown
+                                            Sort
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
+                                            <Dropdown.Item href="#">Sort by on sale</Dropdown.Item>
+                                            <Dropdown.Item href="#">Sort by popularity</Dropdown.Item>
+                                            <Dropdown.Item href="#">Sort by price: low to high</Dropdown.Item>
+                                            <Dropdown.Item href="#">Sort by price: high to low</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
 
                                     <Dropdown className="d-inline mx-2">
                                         <Dropdown.Toggle id="dropdown-autoclose-true">
-                                            Default Dropdown
+                                            Show
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
-                                            <Dropdown.Item href="#">Menu Item</Dropdown.Item>
+                                            <Dropdown.Item href="#">Show 5</Dropdown.Item>
+                                            <Dropdown.Item href="#">Show 15</Dropdown.Item>
+                                            <Dropdown.Item href="#">Show 20</Dropdown.Item>
+                                            <Dropdown.Item href="#">Show 25</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
@@ -189,24 +192,10 @@ export default class Shop extends React.Component {
                             <Row>
                                 {this.state.listItem && this.state.listItem.length > 0 &&
                                     this.state.listItem.map(item => (
-                                        <Col xs={3}>
-                                            <Card>
-                                                <Card.Img variant="top" src={
-                                                    IMAGES.hasOwnProperty(item.book_cover_photo) ?
-                                                        IMAGES[item.book_cover_photo] :
-                                                        IMAGES['default']
-                                                } fluid="true" />
-                                                <Card.Body>
-                                                    <Card.Title>{item.book_title}</Card.Title>
-                                                    <Card.Text>
-                                                        {item.author_id}
-                                                    </Card.Text>
-                                                    <Button variant="primary">Go somewhere</Button>
-                                                </Card.Body>
-                                            </Card>
+                                        <Col xs={12} sm={6} md={3}>
+                                            <CardItem data={item} />
                                         </Col>
                                     ))
-
                                 }
                             </Row>
 

@@ -16,14 +16,6 @@ class BookRepository extends BaseRepository
         $this->query = Book::query();
     }
 
-    public function getById($bookId)
-    {
-        // $getById = $this->query->where('id', $bookId);
-
-        // return $getById->get();
-        // return BookResource::collection($getById->paginate(parent::$item_per_page));
-    }
-
     public function getByIdWithReviewCounting($bookId)
     {
         //Get book with counting all the reviews, and counting each star per book
@@ -51,7 +43,7 @@ class BookRepository extends BaseRepository
 
         return new BookCollection($bookWithReviewCounting->get());
     }
-    
+
     public function getPopular($number)
     {
         return $this->query->massItemInformation()
@@ -65,20 +57,26 @@ class BookRepository extends BaseRepository
 
     public function filter($conditions)
     {
+        //hanle Condition and Params
         $conditionsArr = explode(',', $conditions);
-
         $keySearch = $conditionsArr[0];
         $params = array_slice($conditionsArr, 1);
 
+        //Find API
         if ($keySearch === 'rating') {
-            return $this->query->starRating()
-                ->where('star_scoring', '>=', $params[0])->get();
+            return $this->query->massItemInformation()
+                ->whereNot('star_scoring', null)
+                ->where('star_scoring', '>=', $params[0])
+                ->get();
+        } else if ($keySearch === 'author') {
+            return $this->query->massItemInformation()
+                ->where('author_id', $params[0])
+                ->get();
+        } else if ($keySearch === 'category') {
+            return $this->query->massItemInformation()
+                ->where('category_id', $params[0])
+                ->get();
         }
-
-        // author/category
-        return $this->query->whereHas($keySearch, function ($query) use ($params) {
-            $query->whereIn('id', $params);
-        })->get();
     }
 
     public function sort($conditions)

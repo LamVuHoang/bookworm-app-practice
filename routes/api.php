@@ -23,7 +23,7 @@ use App\Http\Controllers\ShopPageController;
 // });
 
 Route::prefix('home')->group(function () {
-    // Get top 10 books with the most discount : Sub_price vs Final_Price ????
+    // Get top 10 books with the most discount 
     Route::get('get-top-discount/{number?}', [HomePageController::class, 'getTopDiscount'])
         ->where('number', '[0-9]+');
     // Recommended: Get top 8 books with the most rating start : DONE
@@ -32,6 +32,8 @@ Route::prefix('home')->group(function () {
     // Popular: Get top 8 books with the most review and lowest price: DONE
     Route::get('get-popular/{number?}', [HomePageController::class, 'getPopular'])
         ->where('number', '[0-9]+');
+
+    Route::get('test', [HomePageController::class, 'test']);
 });
 
 Route::prefix('shop')->group(function () {

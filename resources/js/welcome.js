@@ -13,7 +13,8 @@ class Welcome extends Component {
             <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/shop" element={<Shop />}></Route>
-                <Route path="/product" element={<Product />}></Route>
+                <Route path="/product/:id" element={<Product />}></Route>
+                {/* <Route path="/product/:id" element={<Product />}> </Route> */}
                 <Route path="/cart" element={<Cart />}></Route>
                 <Route path="/about" element={<About />}></Route>
             </Routes>
