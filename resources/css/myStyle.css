@@ -1,6 +1,10 @@
-/* .myItem {
-    height: 80vh;
-} */
+.myItem {
+    height: 35rem;
+    padding-top: 1rem;
+}
+.myItem .card {
+    padding: 0.1rem;
+}
 
 .myNavLink {
     padding: 2vh;

@@ -5,10 +5,11 @@ import IMAGES from '../../assets';
 
 export default function CardItem(props) {
     return (
-            <Card className='myItem'>
+        <div className='myItem'>
+            <Card>
                 <Link to={{
-                    pathname: `/product/${props.data.id}`,
-                    state: { id: props.data.id }
+                    pathname: `/product/${props.data.book_id}`,
+                    // state: { id: props.data.id }
                 }}>
                     <Card.Img variant="top" src={
                         IMAGES.hasOwnProperty(props.data.book_cover_photo) ?
@@ -34,5 +35,6 @@ export default function CardItem(props) {
                     {/* <Button variant="primary">Go somewhere</Button> */}
                 </Card.Body>
             </Card>
+        </div>
     );
 }

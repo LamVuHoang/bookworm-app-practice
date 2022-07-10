@@ -74,7 +74,9 @@ export default class Home extends React.Component {
                     <Row>
                         <Col className='h3'>On Sale</Col>
                         <Col className='text-right d-flex justify-content-end'>
-                            <Button variant="outline-success" className="text-right">View All</Button>
+                            <Button variant="outline-success" className="text-right"
+                            
+                            >View All</Button>
                         </Col>
                     </Row>
                     <Container>

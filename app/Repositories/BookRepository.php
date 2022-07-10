@@ -23,13 +23,16 @@ class BookRepository extends BaseRepository
 
     public function getPopular($number)
     {
-        return $this->query->massItemInformation()
+        $popularBook = $this->query->massItemInformation()
             ->whereNot('discount_price', 0)
             ->whereNot('review_counting', 0)
             ->orderBy('review_counting', 'desc')
             ->orderBy('discount_price')
             ->limit($number)
             ->get();
+
+        return $popularBook;
+        // return BookResource::collection($popularBook);
     }
 
     public function filter($conditions)
@@ -63,7 +66,7 @@ class BookRepository extends BaseRepository
         else {
             $conditionsArr = explode(',', $conditions);
         }
-        if (count($conditionsArr) === 1) array_push($conditionsArr, 'ASC');
+        if (count($conditionsArr) === 1) array_push($conditionsArr, 'DESC');
 
         //Handle Request
         if ($conditionsArr[0] === 'price') {
@@ -77,11 +80,11 @@ class BookRepository extends BaseRepository
 
             // DEFAULT: SALE 
             if (strtoupper($conditionsArr[1]) === 'DESC') {
-                return $this->query->finalPrice('withJoinSub')
-                    ->orderBy('sub.discount_price', $conditionsArr[1])->get();
+                return $this->query->massItemInformation()
+                    ->orderBy('sub_price', $conditionsArr[1])->get();
             }
-            return $this->query->finalPrice('withJoinSub')
-                ->orderBy('sub.final_price', $conditionsArr[1])->get();
+            return $this->query->massItemInformation()
+                ->orderBy('sub_price', $conditionsArr[1])->get();
         }
     }
 }

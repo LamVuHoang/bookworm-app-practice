@@ -8,6 +8,9 @@ import Header from '../common/Header';
 import Footer from '../common/Footer';
 import React from "react";
 import axios from "axios";
+import IMAGES from "../../assets";
+import Image from 'react-bootstrap/Image';
+
 export default class Product extends React.Component {
     constructor(props) {
         super(props);
@@ -25,7 +28,6 @@ export default class Product extends React.Component {
         //Handle URL 
         let url = window.location.href.split("/");
         let id = url[url.length - 1];
-
         //Call Axios
         axios.get(`http://127.0.0.1:8000/api/product/${id}`)
             .then(res => {
@@ -64,10 +66,14 @@ export default class Product extends React.Component {
                             <Row>
                                 <Col xs={4}>
                                     <div>
-                                        Product Photo
+                                        <Image variant="top" src={
+                                            IMAGES.hasOwnProperty(this.state.product.book_cover_photo) ?
+                                                IMAGES[this.state.product.book_cover_photo] :
+                                                IMAGES['default']
+                                        } fluid="true" />
                                     </div>
                                     <div>
-                                        By <span className="h6"> {this.state.product.author_name}</span>
+                                        By <span className="h6"> {this.state.product.author_id}</span>
                                     </div>
                                 </Col>
                                 <Col xs={8}>
@@ -106,6 +112,9 @@ export default class Product extends React.Component {
                             </Card>
                         </Col>
                     </Row>
+
+                    <br />
+
                     <Row>
                         <Col sm={12} md={8}>
                             {this.state.product.star_scoring !== null ? (
