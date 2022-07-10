@@ -18,30 +18,7 @@ class BookRepository extends BaseRepository
 
     public function getByIdWithReviewCounting($bookId)
     {
-        //Get book with counting all the reviews, and counting each star per book
-        $bookWithReviewCounting = $this->query
-            ->where('id', $bookId)
-            ->withCount([
-                'reviews AS review_all_count',
-                'reviews AS one_star' => function (Builder $query) {
-                    $query->where('rating_start', 1);
-                },
-                'reviews AS two_star' => function (Builder $query) {
-                    $query->where('rating_start', 2);
-                },
-                'reviews AS three_star' => function (Builder $query) {
-                    $query->where('rating_start', 3);
-                },
-                'reviews AS four_star' => function (Builder $query) {
-                    $query->where('rating_start', 4);
-                },
-                'reviews AS five_star' => function (Builder $query) {
-                    $query->where('rating_start', 5);
-                },
-            ])
-            ->groupBy('book.id');
-
-        return new BookCollection($bookWithReviewCounting->get());
+        return $this->query->individualItemInformation($bookId)->first();
     }
 
     public function getPopular($number)
@@ -106,10 +83,5 @@ class BookRepository extends BaseRepository
             return $this->query->finalPrice('withJoinSub')
                 ->orderBy('sub.final_price', $conditionsArr[1])->get();
         }
-    }
-
-    public function test()
-    {
-        return $this->query->massItemInformation()->paginate(10);
     }
 }

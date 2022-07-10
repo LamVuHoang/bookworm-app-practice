@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class Book extends Model
 {
@@ -118,9 +118,9 @@ class Book extends Model
             ->orderBy('sub.final_price');
     }
 
-    public function newFinalPrice()
+    public function newDiscountPrice($id = null)
     {
-        return DB::table('book')->selectRaw(
+        $newFinalePrice = DB::table('book')->selectRaw(
             "book.id,
             book.book_price book_price,
             CASE
@@ -135,19 +135,24 @@ class Book extends Model
             book_price - discount_price sub_price"
         )
             ->leftJoin('discount', 'discount.book_id', '=', 'book.id');
+
+        if ($id) return $newFinalePrice->where('book.id', $id);
+        return $newFinalePrice;
     }
 
-    public function newReviewCount()
+    public function newReviewCount($id = null)
     {
-        return DB::table('book')
+        $newReviewCount = DB::table('book')
             ->leftJoin('review', 'review.book_id', 'book.id')
             ->selectRaw('book.id, COUNT(review.id) review_counting')
             ->groupBy('book.id');
+        if ($id) return $newReviewCount->where('book.id', $id);
+        return $newReviewCount;
     }
 
-    public function newStarScoring()
+    public function newStarScoring($id = null)
     {
-        return DB::table(function ($innerQuery) {
+        $newStarScoring = DB::table(function ($innerQuery) {
             $innerQuery->selectRaw(
                 'book.id, 
             ROUND(COUNT(review.id), 1) star_counting, 
@@ -158,23 +163,58 @@ class Book extends Model
                 ->groupBy('book.id');
         }, 't1')
             ->selectRaw("t1.id, ROUND(t1.star_weighting/t1.star_counting, 1) star_scoring");
+
+        if ($id) return $newStarScoring->where('book.id', $id);
+        return $newStarScoring;
     }
 
     public function scopeMassItemInformation($query)
     {
-        $finalPrice = $this->newFinalPrice();
-
+        $discountPrice = $this->newDiscountPrice();
         $reviewCount = $this->newReviewCount();
-
         $starScoring = $this->newStarScoring();
 
-        return $query->joinSub($finalPrice, 'final_price', function ($join) {
-            $join->on('final_price.id', 'book.id');
+        return $query->joinSub($discountPrice, 'discount_price', function ($join) {
+            $join->on('discount_price.id', 'book.id');
         })->joinSub($starScoring, 'star_scoring', function ($join) {
             $join->on('star_scoring.id', 'book.id');
         })->joinSub($reviewCount, 'review_count', function ($join) {
             $join->on('review_count.id', 'book.id');
         })
             ->join('author', 'author.id', 'book.author_id');
+    }
+
+    public function scopeIndividualItemInformation($query, $id)
+    {
+        $discountPrice = $this->newDiscountPrice($id);
+        $starScoring = $this->newStarScoring();
+
+        return $query->joinSub($discountPrice, 'discount_price', function ($join) {
+            $join->on('discount_price.id', 'book.id');
+        })
+            ->joinSub($starScoring, 'star_scoring', function ($join) {
+                $join->on('star_scoring.id', 'book.id');
+            })
+            ->join('author', 'author.id', 'book.author_id')
+            //Get book with counting all the reviews, and counting each star per book
+            ->withCount([
+                'reviews AS review_all_count',
+                'reviews AS one_star' => function (Builder $query) {
+                    $query->where('rating_start', 1);
+                },
+                'reviews AS two_star' => function (Builder $query) {
+                    $query->where('rating_start', 2);
+                },
+                'reviews AS three_star' => function (Builder $query) {
+                    $query->where('rating_start', 3);
+                },
+                'reviews AS four_star' => function (Builder $query) {
+                    $query->where('rating_start', 4);
+                },
+                'reviews AS five_star' => function (Builder $query) {
+                    $query->where('rating_start', 5);
+                },
+            ])
+            ->select('*');
     }
 }

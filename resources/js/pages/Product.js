@@ -27,7 +27,7 @@ export default class Product extends React.Component {
         let id = url[url.length - 1];
 
         //Call Axios
-        axios.get(`http://127.0.0.1:8000/api/product/${id}/rating`)
+        axios.get(`http://127.0.0.1:8000/api/product/${id}`)
             .then(res => {
                 this.setState({ product: res.data })
             })
@@ -67,16 +67,15 @@ export default class Product extends React.Component {
                                         Product Photo
                                     </div>
                                     <div>
-                                        By Author
+                                        By <span className="h6"> {this.state.product.author_name}</span>
                                     </div>
                                 </Col>
                                 <Col xs={8}>
                                     <div className="h4 text-capitalize">
-                                        book title
+                                        {this.state.product.book_title}
                                     </div>
-                                    <div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sagittis eget odio at hendrerit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras mollis felis sed odio ultrices porttitor. Nullam rutrum eleifend ante, vitae feugiat massa efficitur eget. Vivamus ornare velit et odio semper dictum. Nam sit amet condimentum lectus, in placerat ex. Vestibulum rutrum magna ipsum, imperdiet rhoncus quam pulvinar at. Praesent eu molestie metus, sed semper massa. Praesent lobortis quam diam, eget pulvinar tortor porttitor eu.</p>
-                                        <p>Phasellus vehicula diam nulla, eget luctus diam auctor quis. Sed vehicula vitae tellus non suscipit. Nulla in viverra felis, eu aliquet arcu. Suspendisse malesuada nunc at lacus gravida aliquet eu ac ipsum. Maecenas a nulla et turpis vestibulum imperdiet. Maecenas vulputate iaculis nisl, eget efficitur augue vestibulum sed. Maecenas dapibus pretium mi, vitae sagittis metus scelerisque at. Proin eget feugiat neque.</p>
+                                    <div className="text-justify">
+                                        <p>{this.state.product.book_summary}</p>
                                     </div>
                                 </Col>
                             </Row>
@@ -84,9 +83,14 @@ export default class Product extends React.Component {
                         <Col sm={12} md={4}>
                             <Card>
                                 <Card.Header>
-                                    <del className="text-secondary">original price</del>
-
-                                    <span className="p-2 h5">price</span>
+                                    {this.state.product.discount_price == 0 ? (
+                                        <span className='h5'> {this.state.product.book_price} </span>
+                                    ) : (
+                                        <>
+                                            <del className="text-secondary"> {this.state.product.book_price}</del>
+                                            <span className="p-2 h5">{this.state.product.discount_price}</span>
+                                        </>
+                                    )}
                                 </Card.Header>
                                 <Card.Body className="text-center">
                                     <Card.Title>Quantity</Card.Title>
@@ -104,9 +108,18 @@ export default class Product extends React.Component {
                     </Row>
                     <Row>
                         <Col sm={12} md={8}>
-                            <span className="h4 text-capitalize">customer review</span>
-                            <span className="text-secondary">(Filtered by 5 star)</span>
-                            <div className="h3">4.6 Star</div>
+                            {this.state.product.star_scoring !== null ? (
+                                <>
+                                    <span className="h4 text-capitalize pr-2">customer review </span>
+                                    <span className="text-secondary">(Filtered by 5 star)</span>
+                                    <div className="h3">{this.state.product.star_scoring} Star</div>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="h4 text-capitalize">customer review</span>
+                                    <div className="h3">There is No Review</div>
+                                </>
+                            )}
                             <div>
                                 <Badge pill bg="danger  ">
                                     Primary
