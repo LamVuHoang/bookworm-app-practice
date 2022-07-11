@@ -3,7 +3,6 @@ import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Carousel from 'react-bootstrap/Carousel';
 import Button from 'react-bootstrap/Button';
 import Header from '../common/Header';
 import Footer from '../common/Footer';
@@ -12,6 +11,14 @@ import IMAGES from '../../assets';
 import '../../css/myStyle.css';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
+// import Swiper core and required modules
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -20,7 +27,7 @@ export default class Home extends React.Component {
             onSale: [],
             recommendedBook: [],
             popularBook: [],
-            isRecommendedBook: true
+            isRecommendedBook: true,
         };
     }
 
@@ -78,17 +85,22 @@ export default class Home extends React.Component {
                         </Col>
                     </Row>
                     <Container>
-                        <Carousel>
-                            <Carousel.Item>
-                                <Row>
-                                    {this.state.onSale.map(item => (
-                                        <Col xs={12} sm={6} md={3}>
-                                            <CardItem data={item} />
-                                        </Col>
-                                    ))}
-                                </Row>
-                            </Carousel.Item>
-                        </Carousel>
+                        <Swiper
+                            modules={[Navigation, Pagination, Scrollbar, A11y]}
+                            spaceBetween={50}
+                            slidesPerView={3}
+                            navigation
+                            pagination={{ clickable: true }}
+                            scrollbar={{ draggable: true }}
+                            onSwiper={(swiper) => console.log(swiper)}
+                            onSlideChange={() => console.log('slide change')}
+                        >
+                            {this.state.onSale.map(item => (
+                                <SwiperSlide >
+                                    <CardItem data={item} />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
                     </Container>
                 </Container>
 
