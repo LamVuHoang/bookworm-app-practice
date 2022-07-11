@@ -5,7 +5,6 @@ import Shop from "./pages/Shop";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
-import Test from "./pages/Test";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Welcome extends Component {
@@ -15,7 +14,6 @@ class Welcome extends Component {
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/shop" element={<Shop />}></Route>
                 <Route path="/product/:id" element={<Product />}></Route>
-                {/* <Route path="/product/:id" element={<Product />}> </Route> */}
                 <Route path="/cart" element={<Cart />}></Route>
                 <Route path="/about" element={<About />}></Route>
             </Routes>

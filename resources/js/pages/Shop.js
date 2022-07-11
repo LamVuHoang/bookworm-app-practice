@@ -207,7 +207,6 @@ export default class Shop extends React.Component {
                         </Col>
                     </Row>
                 </Container>
-
                 <br />
                 <Footer />
             </>
