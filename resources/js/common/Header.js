@@ -35,11 +35,11 @@ export default function Header() {
                         }>
                             Cart (0)
                         </NavLink>
-                        {/* <NavLink to={'/signin'} className={
+                        <NavLink to={'/signin'} className={
                             ({ isActive }) => (isActive ? 'myNavLinkIsActive' : 'myNavLink')
                         }>
                             Sign In
-                        </NavLink> */}
+                        </NavLink>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
