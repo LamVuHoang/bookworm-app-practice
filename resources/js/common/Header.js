@@ -6,6 +6,7 @@ import Image from 'react-bootstrap/Image';
 import IMAGES from '../../assets';
 
 export default function Header() {
+
     return (
         <Navbar collapseOnSelect expand="lg" bg="light" variant="dark" className="navbar-fixed-top">
             <Container fluid className='d-flex'>

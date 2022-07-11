@@ -38,3 +38,7 @@ Route::get('about', function () {
 Route::get('cart', function () {
     return view('welcome');
 });
+
+Route::get('signin', function () {
+    return view('welcome');
+});
