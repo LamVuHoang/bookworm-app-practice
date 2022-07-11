@@ -78,3 +78,7 @@
     text-align: left;
     text-transform: capitalize;
 }
+
+.toRight {
+    right: 0;
+}

@@ -8,12 +8,12 @@ import IMAGES from '../../assets';
 export default function Header() {
     return (
         <Navbar collapseOnSelect expand="lg" bg="light" variant="dark" className="navbar-fixed-top">
-            <Container fluid>
+            <Container fluid className='d-flex'>
                 <Navbar.Brand href={"/"}>
                     <Image src={IMAGES.bookCover} fluid />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
+                <Navbar.Collapse id="responsive-navbar-nav" className='justify-content-end'>
                     <Nav className="me-auto">
                     </Nav>
                     <Nav>
