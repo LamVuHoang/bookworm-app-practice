@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Container, Col, Row } from "react-bootstrap";
+import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -14,7 +15,6 @@ import CardItem from '../common/CardItem';
 import '../../css/myStyle.css';
 import ReactPaginate from 'react-paginate';
 
-
 export default class Shop extends React.Component {
     constructor(props) {
         super(props);
@@ -25,6 +25,7 @@ export default class Shop extends React.Component {
             rating: [1, 2, 3, 4, 5],
             filterType: '',
             keyWord: '',
+            keyId: ''
         };
 
         this.filter = this.filter.bind(this);
@@ -58,10 +59,14 @@ export default class Shop extends React.Component {
             });
     }
 
-    filter = (type, id) => {
+    filter = (type = '', id, page = 1) => {
         this.setState({ filterType: type })
+        let URL;
+        type == '' ?
+            URL = `http://127.0.0.1:8000/api/shop/sort?page=${page}` :
+            URL = `http://127.0.0.1:8000/api/shop/filter?conditions=${type},${id}&page=${page}`;
         axios
-            .get(`http://127.0.0.1:8000/api/shop/filter?conditions=${type},${id}`)
+            .get(URL)
             .then(response => {
                 this.setState({ listItem: response.data })
             })
@@ -82,7 +87,8 @@ export default class Shop extends React.Component {
     }
 
     handleClickPaginate = (index) => {
-        this.filter('rating', '1');
+        // console.log(index)
+        this.filter(this.state.filterType, this.state.keyId, index.selected + 1);
     }
 
     render() {
@@ -128,15 +134,16 @@ export default class Shop extends React.Component {
                 <Container>
                     <Row>
                         <Col sm={12} md={2}>
-                            <div className="h6">
+                            <div className="h6 font-weight-bold">
                                 Filter By
                             </div>
                             <div className="border border-secondary p-2">
-                                <div className="h6">Category</div>
+                                <div className="h6 font-weight-bold">Category</div>
                                 <ListGroup variant="flush">
                                     {this.state.categoryList.map(item => (
                                         <ListGroup.Item onClick={() => {
                                             this.setState({ keyWord: item.category_name })
+                                            this.setState({ keyId: item.category_name })
                                             this.filter('category', item.id)
                                         }}>
                                             <Button className="filterButton">
@@ -150,11 +157,12 @@ export default class Shop extends React.Component {
                             <br />
 
                             <div className="border border-secondary p-2">
-                                <div className="h6">Author</div>
+                                <div className="h6 font-weight-bold">Author</div>
                                 <ListGroup variant="flush">
                                     {this.state.authorList.map(item => (
                                         <ListGroup.Item onClick={() => {
                                             this.setState({ keyWord: item.author_name })
+                                            this.setState({ keyId: item.author_name })
                                             this.filter('author', item.id)
                                         }}>
                                             <Button className="filterButton">
@@ -173,6 +181,7 @@ export default class Shop extends React.Component {
                                     {this.state.rating.map(item => (
                                         <ListGroup.Item onClick={() => {
                                             this.setState({ keyWord: item })
+                                            this.setState({ keyId: item })
                                             this.filter('rating', item)
                                         }}>
                                             <Button className="filterButton">
@@ -186,7 +195,7 @@ export default class Shop extends React.Component {
                         <Col sm={12} md={10}>
                             <Row>
                                 <Col>
-                                    Showing {this.state.listItem.from}-{this.state.listItem.last_page} of 
+                                    Showing {this.state.listItem.from}-{this.state.listItem.last_page} of
                                     <span className='p-1'>{this.state.listItem.total}</span> books
                                 </Col>
                                 <Col className="text-right d-flex justify-content-end">
@@ -217,7 +226,7 @@ export default class Shop extends React.Component {
                             </Row>
 
                             <br />
-                            
+
                             <Row>
                                 {this.state.listItem.data && this.state.listItem.data.length > 0 &&
                                     this.state.listItem.data.map(item => (

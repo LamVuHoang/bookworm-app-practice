@@ -66,9 +66,12 @@ Route::prefix('product')->group(function () {
         ->where('id_book', '[0-9]+')->where('rating_star', '[1-5]');
 });
 
-Route::prefix('signin')->group(function() {
+Route::prefix('signin')->group(function () {
     Route::post('/', [SignInPageController::class, 'index']);
 });
-// Route::apiResource('cart', CartPageController::class);
-// Route::apiResource('review', CartPageController::class);
 
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('user-information', [SignInPageController::class, 'show']);
+    Route::apiResource('cart', CartPageController::class);
+});
+// Route::apiResource('review', CartPageController::class);

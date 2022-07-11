@@ -73,7 +73,6 @@ export default class Home extends React.Component {
     render() {
         return (
             <>
-                {/* {console.log(this.state.onSale)} */}
                 <Header />
                 <br />
 
