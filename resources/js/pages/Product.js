@@ -37,7 +37,6 @@ export default class Product extends React.Component {
                 console.log(err)
             });
     }
-
     render() {
         return (
             <>

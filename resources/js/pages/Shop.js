@@ -12,6 +12,8 @@ import Footer from '../common/Footer';
 import IMAGES from '../../assets';
 import CardItem from '../common/CardItem';
 import '../../css/myStyle.css';
+import ReactPaginate from 'react-paginate';
+
 
 export default class Shop extends React.Component {
     constructor(props) {
@@ -20,7 +22,9 @@ export default class Shop extends React.Component {
             authorList: [],
             categoryList: [],
             listItem: [],
-            rating: [1, 2, 3, 4, 5]
+            rating: [1, 2, 3, 4, 5],
+            filterType: '',
+            keyWord: '',
         };
 
         this.filter = this.filter.bind(this);
@@ -55,6 +59,7 @@ export default class Shop extends React.Component {
     }
 
     filter = (type, id) => {
+        this.setState({ filterType: type })
         axios
             .get(`http://127.0.0.1:8000/api/shop/filter?conditions=${type},${id}`)
             .then(response => {
@@ -76,6 +81,10 @@ export default class Shop extends React.Component {
             });
     }
 
+    handleClickPaginate = (index) => {
+        this.filter('rating', '1');
+    }
+
     render() {
         return (
             <>
@@ -85,10 +94,25 @@ export default class Shop extends React.Component {
                 <Container>
                     <Row>
                         <Col>
-                            <span className="h3">Books</span>
-                            <span className="text-secondary">
-                                {/* ( Filtered by Category #1 ) */}
-                            </span>
+                            <span className="h3 p-1">Books</span>
+                            {this.state.filterType ? (
+                                <span className="text-secondary">
+                                    ( Filtered by
+                                    <span className='text-capitalize p-1'>{this.state.filterType}</span>
+                                    {this.state.filterType === 'rating' ? (
+                                        <span className='text-capitalize'>
+                                            {this.state.keyWord} Star
+                                        </span>
+                                    ) : (
+                                        <span className='text-capitalize'>
+                                            {this.state.keyWord}
+                                        </span>
+                                    )
+                                    }
+                                    )
+                                </span>
+                            ) : (<></>)
+                            }
                         </Col>
                     </Row>
                 </Container>
@@ -112,11 +136,12 @@ export default class Shop extends React.Component {
                                 <ListGroup variant="flush">
                                     {this.state.categoryList.map(item => (
                                         <ListGroup.Item onClick={() => {
+                                            this.setState({ keyWord: item.category_name })
                                             this.filter('category', item.id)
                                         }}>
-                                            {/* <Link > */}
-                                            {item.category_name}
-                                            {/* </Link> */}
+                                            <Button className="filterButton">
+                                                {item.category_name}
+                                            </Button>
                                         </ListGroup.Item>
                                     ))}
                                 </ListGroup>
@@ -129,11 +154,12 @@ export default class Shop extends React.Component {
                                 <ListGroup variant="flush">
                                     {this.state.authorList.map(item => (
                                         <ListGroup.Item onClick={() => {
+                                            this.setState({ keyWord: item.author_name })
                                             this.filter('author', item.id)
                                         }}>
-                                            {/* <Link to={item.id}> */}
-                                            {item.author_name}
-                                            {/* </Link> */}
+                                            <Button className="filterButton">
+                                                {item.author_name}
+                                            </Button>
                                         </ListGroup.Item>
                                     ))}
                                 </ListGroup>
@@ -146,11 +172,12 @@ export default class Shop extends React.Component {
                                 <ListGroup variant="flush">
                                     {this.state.rating.map(item => (
                                         <ListGroup.Item onClick={() => {
+                                            this.setState({ keyWord: item })
                                             this.filter('rating', item)
                                         }}>
-                                            {/* <Link to={item}> */}
-                                            {item} star
-                                            {/* </Link> */}
+                                            <Button className="filterButton">
+                                                {item} star
+                                            </Button>
                                         </ListGroup.Item>
                                     ))}
                                 </ListGroup>
@@ -159,7 +186,8 @@ export default class Shop extends React.Component {
                         <Col sm={12} md={10}>
                             <Row>
                                 <Col>
-                                    Showing 1-12 of 126 books
+                                    Showing {this.state.listItem.from}-{this.state.listItem.last_page} of 
+                                    <span className='p-1'>{this.state.listItem.total}</span> books
                                 </Col>
                                 <Col className="text-right d-flex justify-content-end">
                                     <Dropdown className="d-inline mx-2">
@@ -187,9 +215,12 @@ export default class Shop extends React.Component {
                                     </Dropdown>
                                 </Col>
                             </Row>
+
+                            <br />
+                            
                             <Row>
-                                {this.state.listItem && this.state.listItem.length > 0 &&
-                                    this.state.listItem.map(item => (
+                                {this.state.listItem.data && this.state.listItem.data.length > 0 &&
+                                    this.state.listItem.data.map(item => (
                                         <Col xs={12} sm={6} md={3}>
                                             <CardItem data={item} />
                                         </Col>
@@ -201,7 +232,27 @@ export default class Shop extends React.Component {
 
                             <Row>
                                 <Col className="d-flex justify-content-center">
-                                    <CustomPagination />
+                                    <ReactPaginate
+                                        previousLabel={"<<"}
+                                        nextLabel={">>"}
+                                        breakLabel={'...'}
+                                        pageCount={this.state.listItem.last_page}
+                                        marginPagesDisplayed={3}
+                                        pageRangeDisplayed={3}
+                                        onPageChange={this.handleClickPaginate}
+                                        containerClassName={'pagination'}
+                                        pageClassName={'page-item'}
+                                        pageLinkClassName={'page-link'}
+                                        previousClassName={'page-link'}
+                                        nextClassName={'page-link'}
+                                        nextLinkClassName={'page-link'}
+                                        breakClassName={'page-link'}
+                                        breakLinkClassName={'page-link'}
+                                        activeClassName={'active'}
+
+                                    />
+                                    <br />
+                                    {/* <CustomPagination /> */}
                                 </Col>
                             </Row>
                         </Col>

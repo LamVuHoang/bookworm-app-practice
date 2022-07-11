@@ -70,3 +70,11 @@
 .swiper-button-prev {
     color: red;
 }
+
+.filterButton {
+    background-color: white;
+    color: black;
+    border: none;
+    text-align: left;
+    text-transform: capitalize;
+}

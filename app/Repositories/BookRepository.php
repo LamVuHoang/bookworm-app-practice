@@ -2,12 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Http\Resources\BookCollection;
-use App\Http\Resources\BookResource;
+// use App\Http\Resources\BookCollection;
+// use App\Http\Resources\BookResource;
 use App\Repositories\BaseRepository;
 use App\Models\Book;
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class BookRepository extends BaseRepository
 {
@@ -47,15 +45,15 @@ class BookRepository extends BaseRepository
             return $this->query->massItemInformation()
                 ->whereNot('star_scoring', null)
                 ->where('star_scoring', '>=', $params[0])
-                ->get();
+                ->paginate(parent::$item_per_page);
         } else if ($keySearch === 'author') {
             return $this->query->massItemInformation()
                 ->where('author_id', $params[0])
-                ->get();
+                ->paginate(parent::$item_per_page);
         } else if ($keySearch === 'category') {
             return $this->query->massItemInformation()
                 ->where('category_id', $params[0])
-                ->get();
+                ->paginate(parent::$item_per_page);
         }
     }
 
@@ -82,7 +80,7 @@ class BookRepository extends BaseRepository
             return $this->query->massItemInformation()
                 ->whereNot('discount_price', 0)
                 ->orderBy('sub_price', $conditionsArr[1])
-                ->get();
+                ->paginate(parent::$item_per_page);
             // }
         }
     }
