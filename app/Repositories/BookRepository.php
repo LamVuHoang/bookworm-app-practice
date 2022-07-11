@@ -77,14 +77,13 @@ class BookRepository extends BaseRepository
 
             return $this->query->popularity($conditionsArr[1])->get();
         } else {
-
             // DEFAULT: SALE 
-            if (strtoupper($conditionsArr[1]) === 'DESC') {
-                return $this->query->massItemInformation()
-                    ->orderBy('sub_price', $conditionsArr[1])->get();
-            }
+            // if (strtoupper($conditionsArr[1]) === 'DESC') {
             return $this->query->massItemInformation()
-                ->orderBy('sub_price', $conditionsArr[1])->get();
+                ->whereNot('discount_price', 0)
+                ->orderBy('sub_price', $conditionsArr[1])
+                ->get();
+            // }
         }
     }
 }

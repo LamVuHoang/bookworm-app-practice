@@ -74,9 +74,7 @@ export default class Home extends React.Component {
                     <Row>
                         <Col className='h3'>On Sale</Col>
                         <Col className='text-right d-flex justify-content-end'>
-                            <Button variant="outline-success" className="text-right"
-                            
-                            >View All</Button>
+                            <Link to={'/shop'} className='text-right myLink'>View All</Link>
                         </Col>
                     </Row>
                     <Container>
@@ -102,13 +100,13 @@ export default class Home extends React.Component {
                     </Row>
                     <Row>
                         <Col className='text-right d-flex justify-content-end'>
-                            <Button variant="outline-success"
+                            <Button className='myLink'
                                 onClick={() => {
                                     this.setState({ isRecommendedBook: true })
                                 }}>Recommended</Button>
                         </Col>
                         <Col>
-                            <Button variant="outline-success"
+                            <Button className='myLink'
                                 onClick={() => {
                                     this.setState({ isRecommendedBook: false })
                                 }}>Popular</Button>
@@ -120,7 +118,7 @@ export default class Home extends React.Component {
                     <Row>
                         {(this.state.isRecommendedBook == true ? this.state.recommendedBook
                             : this.state.popularBook).map(item => (
-                                <Col xs={3}>
+                                <Col xs={12} sm={6} md={3}>
                                     <CardItem data={item} />
                                 </Col>
                             ))}

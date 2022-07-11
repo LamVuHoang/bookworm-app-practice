@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Container, Col, Row, Accordion } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -87,7 +87,7 @@ export default class Shop extends React.Component {
                         <Col>
                             <span className="h3">Books</span>
                             <span className="text-secondary">
-                                ( Filtered by Category #1 )
+                                {/* ( Filtered by Category #1 ) */}
                             </span>
                         </Col>
                     </Row>
@@ -164,11 +164,10 @@ export default class Shop extends React.Component {
                                 <Col className="text-right d-flex justify-content-end">
                                     <Dropdown className="d-inline mx-2">
                                         <Dropdown.Toggle id="dropdown-autoclose-true">
-                                            Sort
+                                            Sort by on sale
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item href="#">Sort by on sale</Dropdown.Item>
                                             <Dropdown.Item href="#">Sort by popularity</Dropdown.Item>
                                             <Dropdown.Item href="#">Sort by price: low to high</Dropdown.Item>
                                             <Dropdown.Item href="#">Sort by price: high to low</Dropdown.Item>
@@ -177,13 +176,12 @@ export default class Shop extends React.Component {
 
                                     <Dropdown className="d-inline mx-2">
                                         <Dropdown.Toggle id="dropdown-autoclose-true">
-                                            Show
+                                            Show 20
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
                                             <Dropdown.Item href="#">Show 5</Dropdown.Item>
                                             <Dropdown.Item href="#">Show 15</Dropdown.Item>
-                                            <Dropdown.Item href="#">Show 20</Dropdown.Item>
                                             <Dropdown.Item href="#">Show 25</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>

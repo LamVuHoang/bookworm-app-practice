@@ -5,6 +5,7 @@ import Shop from "./pages/Shop";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import About from "./pages/About";
+import Test from "./pages/Test";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 class Welcome extends Component {
