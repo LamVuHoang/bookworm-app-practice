@@ -24,10 +24,12 @@ export default function CardItem(props) {
                         <br />
                         <span>{
                             props.data.discount_price == 0 ? (
-                                <span className='h5'> {props.data.book_price} </span>
+                                <span className='h5 font-weight-bold'>${props.data.book_price} </span>
                             ) : (
                                 <>
-                                    <del> {props.data.book_price}</del> <span className='h5'> {props.data.discount_price}</span>
+                                    <del className='p-1 text-secondary'> ${props.data.book_price}</del>
+                                    <span className='h5 font-weight-bold'>${props.data.discount_price}
+                                    </span>
                                 </>
                             )
                         }</span>

@@ -16,7 +16,8 @@ export default class Product extends React.Component {
         super(props);
         this.state = {
             id: [],
-            product: []
+            product: [],
+            authorName: ''
         };
     }
 
@@ -32,6 +33,7 @@ export default class Product extends React.Component {
         axios.get(`http://127.0.0.1:8000/api/product/${id}`)
             .then(res => {
                 this.setState({ product: res.data })
+                this.setState({ authorName: res.data.data.author.author_name })
             })
             .catch(err => {
                 console.log(err)
@@ -72,7 +74,7 @@ export default class Product extends React.Component {
                                         } fluid="true" />
                                     </div>
                                     <div>
-                                        By <span className="h6"> {this.state.product.author_id}</span>
+                                        By <span className="h6"> {this.state.product.author_name}</span>
                                     </div>
                                 </Col>
                                 <Col xs={8}>
@@ -89,11 +91,13 @@ export default class Product extends React.Component {
                             <Card>
                                 <Card.Header>
                                     {this.state.product.discount_price == 0 ? (
-                                        <span className='h5'> {this.state.product.book_price} </span>
+                                        <span className='h5'>${this.state.product.book_price} </span>
                                     ) : (
                                         <>
-                                            <del className="text-secondary"> {this.state.product.book_price}</del>
-                                            <span className="p-2 h5">{this.state.product.discount_price}</span>
+                                            <del className="text-secondary">${this.state.product.book_price}</del>
+                                            <span className="p-2 h5 font-weight-bold">
+                                                ${this.state.product.discount_price}
+                                            </span>
                                         </>
                                     )}
                                 </Card.Header>
@@ -120,19 +124,14 @@ export default class Product extends React.Component {
                                 <>
                                     <span className="h4 text-capitalize pr-2">customer review </span>
                                     <span className="text-secondary">(Filtered by 5 star)</span>
-                                    <div className="h3">{this.state.product.star_scoring} Star</div>
+                                    <div className="h6">{this.state.product.star_scoring} Star</div>
                                 </>
                             ) : (
                                 <>
                                     <span className="h4 text-capitalize">customer review</span>
-                                    <div className="h3">There is No Review</div>
+                                    <div className="h6">There is No Review</div>
                                 </>
                             )}
-                            <div>
-                                <Badge pill bg="danger  ">
-                                    Primary
-                                </Badge>
-                            </div>
                         </Col>
                         <Col sm={12} md={4}>
                             <Card>

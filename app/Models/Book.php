@@ -36,24 +36,37 @@ class Book extends Model
 
     public function newDiscountPrice($id = null)
     {
-        $newFinalePrice = DB::table('book')
-            ->selectRaw(
+        $newFinalePrice = DB::table(function ($innerQuery) {
+            $innerQuery->selectRaw(
                 "book.id AS book_id,
-            book.book_price AS book_price,
-            CASE
-            WHEN discount.discount_end_date IS NULL
-            AND DATE_TRUNC('DAY', discount.discount_start_date) < DATE_TRUNC('DAY', NOW()) 
-            THEN discount.discount_price
-            WHEN DATE_TRUNC('DAY', discount.discount_start_date) < DATE_TRUNC('DAY', NOW())
-            AND DATE_TRUNC('DAY', discount.discount_end_date) > DATE_TRUNC('DAY', NOW()) 
-            THEN discount.discount_price
-            ELSE 0
-            END AS discount_price,
-            (book_price - discount_price) AS sub_price"
+                book.book_price AS book_price,
+                CASE
+                WHEN discount.discount_end_date IS NULL
+                AND DATE_TRUNC('DAY', discount.discount_start_date) < DATE_TRUNC('DAY', NOW()) 
+                THEN discount.discount_price
+                WHEN DATE_TRUNC('DAY', discount.discount_start_date) < DATE_TRUNC('DAY', NOW())
+                AND DATE_TRUNC('DAY', discount.discount_end_date) > DATE_TRUNC('DAY', NOW()) 
+                THEN discount.discount_price
+                ELSE 0
+                END AS discount_price,
+                (book_price - discount_price) AS sub_price"
             )
-            ->leftJoin('discount', 'discount.book_id', '=', 'book.id');
+                ->from('book')
+                ->leftJoin('discount', 'discount.book_id', '=', 'book.id');
+        }, 't1')
+            ->selectRaw("
+            t1.book_id,
+            t1.book_price,
+            t1.discount_price,
+            t1.sub_price,
+            CASE 
+            WHEN t1.discount_price = 0
+                THEN t1.book_price
+            ELSE t1.discount_price
+            END AS final_price
+        ");
 
-        if ($id) return $newFinalePrice->where('book.id', $id);
+        if ($id) return $newFinalePrice->where('t1.book_id', $id);
         return $newFinalePrice;
     }
 
@@ -114,7 +127,7 @@ class Book extends Model
             ->joinSub($starScoring, 'star_scoring', function ($join) {
                 $join->on('star_scoring.book_id', 'book.id');
             })
-            ->with(['author'])
+            ->join('author', 'book.author_id', 'author.id')
             // Get book with counting all the reviews, and counting each star per book
             ->withCount([
                 'reviews AS review_all_count',

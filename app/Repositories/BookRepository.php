@@ -68,12 +68,16 @@ class BookRepository extends BaseRepository
 
         //Handle Request
         if ($conditionsArr[0] === 'price') {
-
-            return $this->query->finalPrice('withJoinSub')
-                ->orderBy('sub.final_price', $conditionsArr[1])->get();
+            return $this->query->massItemInformation()
+                ->orderBy('final_price', $conditionsArr[1])
+                ->paginate(parent::$item_per_page);
         } else if ($conditionsArr[0] === 'popularity') {
-
-            return $this->query->popularity($conditionsArr[1])->get();
+            return $this->query->massItemInformation()
+                ->whereNot('discount_price', 0)
+                ->whereNot('review_counting', 0)
+                ->orderBy('review_counting', 'desc')
+                ->orderBy('discount_price')
+                ->paginate(parent::$item_per_page);
         } else {
             // DEFAULT: SALE 
             // if (strtoupper($conditionsArr[1]) === 'DESC') {

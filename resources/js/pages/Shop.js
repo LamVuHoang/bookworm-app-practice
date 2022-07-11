@@ -195,7 +195,8 @@ export default class Shop extends React.Component {
                         <Col sm={12} md={10}>
                             <Row>
                                 <Col>
-                                    Showing {this.state.listItem.from}-{this.state.listItem.last_page} of
+                                    Showing {this.state.listItem.from}-
+                                    {this.state.listItem.from+this.state.listItem.per_page-1} of
                                     <span className='p-1'>{this.state.listItem.total}</span> books
                                 </Col>
                                 <Col className="text-right d-flex justify-content-end">
