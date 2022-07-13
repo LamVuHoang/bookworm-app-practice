@@ -86,7 +86,7 @@ class Book extends Model
             $innerQuery->selectRaw(
                 'book.id AS book_id, 
                 ROUND(COUNT(review.id), 1) star_counting, 
-                ROUND(SUM(review.rating_start), 1) star_weighting'
+                ROUND(SUM(review.rating_star), 1) star_weighting'
             )
                 ->from('book')
                 ->leftJoin('review', 'review.book_id', 'book.id')
@@ -132,19 +132,19 @@ class Book extends Model
             ->withCount([
                 'reviews AS review_all_count',
                 'reviews AS one_star' => function (Builder $query) {
-                    $query->where('rating_start', 1);
+                    $query->where('rating_star', 1);
                 },
                 'reviews AS two_star' => function (Builder $query) {
-                    $query->where('rating_start', 2);
+                    $query->where('rating_star', 2);
                 },
                 'reviews AS three_star' => function (Builder $query) {
-                    $query->where('rating_start', 3);
+                    $query->where('rating_star', 3);
                 },
                 'reviews AS four_star' => function (Builder $query) {
-                    $query->where('rating_start', 4);
+                    $query->where('rating_star', 4);
                 },
                 'reviews AS five_star' => function (Builder $query) {
-                    $query->where('rating_start', 5);
+                    $query->where('rating_star', 5);
                 },
             ])
             ->select('*');

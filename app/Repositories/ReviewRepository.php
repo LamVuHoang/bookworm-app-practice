@@ -19,7 +19,7 @@ class ReviewRepository extends BaseRepository
         if ($ratingStar) {
             $review = $this->query
                 ->where('book_id', $bookId)
-                ->where('rating_start', $ratingStar)
+                ->where('rating_star', $ratingStar)
                 ->orderBy('review_date', $conditions);
         } else {
             $review = $this->query

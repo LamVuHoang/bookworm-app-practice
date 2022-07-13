@@ -19,7 +19,7 @@ class CreateReviewsTable extends Migration
             $table->string('review_title', 120);
             $table->text('review_details')->nullable();
             $table->timestamp('review_date');
-            $table->unsignedTinyInteger('rating_start');
+            $table->unsignedTinyInteger('rating_star');
         });
     }
 
