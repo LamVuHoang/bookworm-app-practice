@@ -137,66 +137,76 @@ export default class Shop extends React.Component {
                             <div className="h6 font-weight-bold">
                                 Filter By
                             </div>
-                            <div className="border border-secondary p-2">
-                                <div className="h6 font-weight-bold">Category</div>
-                                <ListGroup variant="flush">
-                                    {this.state.categoryList.map(item => (
-                                        <ListGroup.Item onClick={() => {
-                                            this.setState({ keyWord: item.category_name })
-                                            this.setState({ keyId: item.category_name })
-                                            this.filter('category', item.id)
-                                        }}>
-                                            <Button className="filterButton">
-                                                {item.category_name}
-                                            </Button>
-                                        </ListGroup.Item>
-                                    ))}
-                                </ListGroup>
-                            </div>
-
-                            <br />
-
-                            <div className="border border-secondary p-2">
-                                <div className="h6 font-weight-bold">Author</div>
-                                <ListGroup variant="flush">
-                                    {this.state.authorList.map(item => (
-                                        <ListGroup.Item onClick={() => {
-                                            this.setState({ keyWord: item.author_name })
-                                            this.setState({ keyId: item.author_name })
-                                            this.filter('author', item.id)
-                                        }}>
-                                            <Button className="filterButton">
-                                                {item.author_name}
-                                            </Button>
-                                        </ListGroup.Item>
-                                    ))}
-                                </ListGroup>
-                            </div>
-
-                            <br />
-
-                            <div className="border border-secondary p-2">
-                                <div className="h6">Rating Review</div>
-                                <ListGroup variant="flush">
-                                    {this.state.rating.map(item => (
-                                        <ListGroup.Item onClick={() => {
-                                            this.setState({ keyWord: item })
-                                            this.setState({ keyId: item })
-                                            this.filter('rating', item)
-                                        }}>
-                                            <Button className="filterButton">
-                                                {item} star
-                                            </Button>
-                                        </ListGroup.Item>
-                                    ))}
-                                </ListGroup>
+                            <div>
+                                <Accordion defaultActiveKey="0">
+                                    <Accordion.Item eventKey="0">
+                                        <Accordion.Header>
+                                            <div className="h6 font-weight-bold">Category</div>
+                                        </Accordion.Header>
+                                        <Accordion.Body>
+                                            <ListGroup variant="flush">
+                                                {this.state.categoryList.map(item => (
+                                                    <ListGroup.Item onClick={() => {
+                                                        this.setState({ keyWord: item.category_name })
+                                                        this.setState({ keyId: item.category_name })
+                                                        this.filter('category', item.id)
+                                                    }}>
+                                                        <Button className="filterButton">
+                                                            {item.category_name}
+                                                        </Button>
+                                                    </ListGroup.Item>
+                                                ))}
+                                            </ListGroup>
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                    <Accordion.Item eventKey="1">
+                                        <Accordion.Header>
+                                            <div className="h6 font-weight-bold">Author</div>
+                                        </Accordion.Header>
+                                        <Accordion.Body>
+                                            <ListGroup variant="flush">
+                                                {this.state.authorList.map(item => (
+                                                    <ListGroup.Item onClick={() => {
+                                                        this.setState({ keyWord: item.author_name })
+                                                        this.setState({ keyId: item.author_name })
+                                                        this.filter('author', item.id)
+                                                    }}>
+                                                        <Button className="filterButton">
+                                                            {item.author_name}
+                                                        </Button>
+                                                    </ListGroup.Item>
+                                                ))}
+                                            </ListGroup>
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                    <Accordion.Item eventKey="2">
+                                        <Accordion.Header>
+                                            <div className="h6">Rating Review</div>
+                                        </Accordion.Header>
+                                        <Accordion.Body>
+                                            <ListGroup variant="flush">
+                                                {this.state.rating.map(item => (
+                                                    <ListGroup.Item onClick={() => {
+                                                        this.setState({ keyWord: item })
+                                                        this.setState({ keyId: item })
+                                                        this.filter('rating', item)
+                                                    }}>
+                                                        <Button className="filterButton">
+                                                            {item} star
+                                                        </Button>
+                                                    </ListGroup.Item>
+                                                ))}
+                                            </ListGroup>
+                                        </Accordion.Body>
+                                    </Accordion.Item>
+                                </Accordion>
                             </div>
                         </Col>
                         <Col sm={12} md={10}>
                             <Row>
                                 <Col>
                                     Showing {this.state.listItem.from}-
-                                    {this.state.listItem.from+this.state.listItem.per_page-1} of
+                                    {this.state.listItem.from + this.state.listItem.per_page - 1} of
                                     <span className='p-1'>{this.state.listItem.total}</span> books
                                 </Col>
                                 <Col className="text-right d-flex justify-content-end">
