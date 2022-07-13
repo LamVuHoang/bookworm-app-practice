@@ -1,6 +1,7 @@
 import { Container, Col, Row } from "react-bootstrap";
-import Header from '../common/Header';
-import Footer from '../common/Footer';
+import {
+    Header, Footer
+} from '../common';
 
 export default function About() {
     return (

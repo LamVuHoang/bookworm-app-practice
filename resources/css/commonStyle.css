@@ -1,0 +1,49 @@
+/* ==================== 
+        || Header || '
+    ==================== */
+
+.myNavLink {
+    padding: 2vh;
+    text-decoration: none;
+    color: rgb(15, 16, 20);
+}
+.myNavLink:hover {
+    padding: 2vh;
+    text-decoration: none;
+    color: rgb(15, 16, 20);
+}
+.myNavLinkIsActive {
+    padding: 2vh;
+    text-decoration: underline;
+    color: red;
+    font-weight: bold;
+}
+
+.myLink {
+    text-decoration: none;
+    border: 0.1rem green;
+    color: green;
+    background-color: white;
+    border-style: solid;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.myLink:hover {
+    text-decoration: inherit;
+    border: inherit;
+    background-color: green;
+    color: white;
+}
+
+/* ==================== 
+        || CardItem || '
+    ==================== */
+
+.myImage {
+    text-align: center;
+    padding: 0.1rem;
+}
+.myImage > img {
+    width: 50%;
+}

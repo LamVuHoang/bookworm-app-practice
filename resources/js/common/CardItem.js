@@ -1,5 +1,4 @@
-import Card from 'react-bootstrap/Card';
-// import { Button } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import IMAGES from '../../assets';
 
@@ -9,16 +8,21 @@ export default function CardItem(props) {
             <Card>
                 <Link to={{
                     pathname: `/product/${props.data.book_id}`,
-                    // state: { id: props.data.id }
                 }}>
-                    <Card.Img variant="top" src={
-                        IMAGES.hasOwnProperty(props.data.book_cover_photo) ?
-                            IMAGES[props.data.book_cover_photo] :
-                            IMAGES['default']
-                    } fluid="true" />
+                    <div className='myImage'>
+                        <Card.Img variant="top" src={
+                            IMAGES.hasOwnProperty(props.data.book_cover_photo) ?
+                                IMAGES[props.data.book_cover_photo] :
+                                IMAGES['default']
+                        } fluid="true" />
+                    </div>
                 </Link>
                 <Card.Body>
-                    <Card.Title>{props.data.book_title}</Card.Title>
+                    <Link to={{
+                        pathname: `/product/${props.data.book_id}`,
+                    }}>
+                        <Card.Title>{props.data.book_title}</Card.Title>
+                    </Link>
                     <Card.Text>
                         {props.data.author_name}
                         <br />
@@ -27,16 +31,20 @@ export default function CardItem(props) {
                                 <span className='h5 font-weight-bold'>${props.data.book_price} </span>
                             ) : (
                                 <>
-                                    <del className='p-1 text-secondary'> ${props.data.book_price}</del>
-                                    <span className='h5 font-weight-bold'>${props.data.discount_price}
-                                    </span>
+                                    <Row className='text-center'>
+                                        <Col>
+                                            <del className='p-1 text-secondary'> ${props.data.book_price}</del>
+                                        </Col>
+                                        <Col>
+                                            <span className='h5 font-weight-bold'>${props.data.discount_price}</span>
+                                        </Col>
+                                    </Row>
                                 </>
                             )
                         }</span>
                     </Card.Text>
-                    {/* <Button variant="primary">Go somewhere</Button> */}
                 </Card.Body>
             </Card>
-        </div>
+        </div >
     );
 }

@@ -1,24 +1,18 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import CardItem from '../common/CardItem';
-import IMAGES from '../../assets';
-import '../../css/myStyle.css';
+import React from 'react';
+import {
+    Container, Row, Col,
+    Button,
+    Modal, Form
+} from 'react-bootstrap';
+import {
+    Header, Footer, SignIn,
+    CardItem,
+    GetData,
+} from '../../common';
+import '../../../css/commonStyle.css';
+import '../../../css/homePageStyle.css';
 import { Link } from 'react-router-dom';
-import Card from 'react-bootstrap/Card';
-// import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import CustomCarousel from './CustomCarousel';
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -39,42 +33,63 @@ export default class Home extends React.Component {
 
 
     getOnSaleBook = () => {
-        axios
-            .get('http://127.0.0.1:8000/api/home/get-top-discount/8')
-            .then(response => {
-                this.setState({ onSale: response.data })
-            })
-            .catch(error => {
-                console.log(error)
-            });
+        GetData(
+            this,
+            'http://127.0.0.1:8000/api/home/get-top-discount/8',
+            'onSale'
+        )
     }
 
     getRecommemdedBook = () => {
-        axios
-            .get('http://127.0.0.1:8000/api/home/get-recommended/8')
-            .then(response => {
-                this.setState({ recommendedBook: response.data })
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        GetData(
+            this,
+            'http://127.0.0.1:8000/api/home/get-recommended/8',
+            'recommendedBook'
+        )
     }
 
     getPopularBook = () => {
-        axios
-            .get('http://127.0.0.1:8000/api/home/get-popular/8')
-            .then(response => {
-                this.setState({ popularBook: response.data })
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        GetData(
+            this,
+            'http://127.0.0.1:8000/api/home/get-popular/8',
+            'popularBook'
+        )
     }
     render() {
         return (
             <>
                 <Header />
                 <br />
+
+                {/* <Modal show={true}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Sign In</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onSubmit={this.handleSubmit}>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control type="email" name='email' placeholder="Enter email" />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control type="password" name='password' placeholder="Password" />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                                <Form.Check type="checkbox" label="Check me out" />
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary">
+                            Close
+                        </Button>
+                        <Button variant="primary">
+                            Sign In
+                        </Button>
+                    </Modal.Footer>
+                </Modal> */}
 
                 <Container>
                     <Row>
@@ -83,24 +98,13 @@ export default class Home extends React.Component {
                             <Link to={'/shop'} className='text-right myLink'>View All</Link>
                         </Col>
                     </Row>
+
+                    {/* || == CAROUSEL == || */}
                     <Container>
-                        <Swiper
-                            modules={[Navigation, Pagination, Scrollbar, A11y]}
-                            spaceBetween={50}
-                            slidesPerView={3}
-                            navigation
-                            pagination={{ clickable: true }}
-                            scrollbar={{ draggable: true }}
-                            onSwiper={(swiper) => console.log(swiper)}
-                            onSlideChange={() => console.log('slide change')}
-                        >
-                            {this.state.onSale.map(item => (
-                                <SwiperSlide >
-                                    <CardItem data={item} />
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
+                        <CustomCarousel data={this.state.onSale} />
                     </Container>
+                    {/* || == END OF CAROUSEL == || */}
+
                 </Container>
 
                 <br />

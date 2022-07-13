@@ -1,12 +1,12 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import {
+    Container,
+    Nav, Navbar,
+    Image
+} from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
-import Image from 'react-bootstrap/Image';
 import IMAGES from '../../assets';
 
 export default function Header() {
-
     return (
         <Navbar collapseOnSelect expand="lg" bg="light" variant="dark" className="navbar-fixed-top">
             <Container fluid className='d-flex'>
@@ -36,11 +36,11 @@ export default function Header() {
                         }>
                             Cart (0)
                         </NavLink>
-                        <NavLink to={'/signin'} className={
+                        {/* <NavLink to={'/signin'} className={
                             ({ isActive }) => (isActive ? 'myNavLinkIsActive' : 'myNavLink')
                         }>
                             Sign In
-                        </NavLink>
+                        </NavLink> */}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

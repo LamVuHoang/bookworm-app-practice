@@ -1,15 +1,17 @@
-import { Container, Col, Row } from "react-bootstrap";
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Badge from 'react-bootstrap/Badge';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
+import {
+    Container, Col, Row,
+    Button,
+    Card,
+    Form, InputGroup,
+    Image
+} from "react-bootstrap";
+import {
+    Header, Footer, SignIn,
+    CardItem,
+    GetData,
+} from '../../common';
 import React from "react";
-import axios from "axios";
-import IMAGES from "../../assets";
-import Image from 'react-bootstrap/Image';
+import IMAGES from "../../../assets";
 
 export default class Product extends React.Component {
     constructor(props) {
@@ -29,15 +31,12 @@ export default class Product extends React.Component {
         //Handle URL 
         let url = window.location.href.split("/");
         let id = url[url.length - 1];
-        //Call Axios
-        axios.get(`http://127.0.0.1:8000/api/product/${id}`)
-            .then(res => {
-                this.setState({ product: res.data })
-                this.setState({ authorName: res.data.data.author.author_name })
-            })
-            .catch(err => {
-                console.log(err)
-            });
+        //Get Data
+        GetData(
+            this,
+            `http://127.0.0.1:8000/api/product/${id}`,
+            'product'
+        )
     }
     render() {
         return (
@@ -153,12 +152,12 @@ export default class Product extends React.Component {
                                             />
                                         </Form.Group>
                                         <Form.Group className="mb-3" controlId="formSelectReview">
-                                            {/* <Form.Select size="sm">
+                                            <Form.Select size="sm">
                                                 <option>Open this select menu</option>
                                                 <option value="1">One</option>
                                                 <option value="2">Two</option>
                                                 <option value="3">Three</option>
-                                            </Form.Select> */}
+                                            </Form.Select>
                                         </Form.Group>
                                         <div className="text-center">
                                             <Button variant="primary" type="submit">

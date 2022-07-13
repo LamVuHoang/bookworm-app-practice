@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { Container, Col, Row } from "react-bootstrap";
-import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
-import CustomPagination from "../common/CustomPagination";
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import IMAGES from '../../assets';
-import CardItem from '../common/CardItem';
-import '../../css/myStyle.css';
+import React from 'react';
+import {
+    Container, Col, Row,
+    Accordion,
+    ListGroup,
+    Button,
+    Dropdown
+} from "react-bootstrap";
+import {
+    Header, Footer, SignIn,
+    CardItem,
+    GetData,
+} from '../../common';
+import '../../../css/commonStyle.css';
+import '../../../css/shopPageStyle.css';
 import ReactPaginate from 'react-paginate';
 
 export default class Shop extends React.Component {
@@ -38,25 +38,19 @@ export default class Shop extends React.Component {
     }
 
     getAuthorList = () => {
-        axios
-            .get('http://127.0.0.1:8000/api/shop/get-author-list')
-            .then(response => {
-                this.setState({ authorList: response.data })
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        GetData(
+            this,
+            'http://127.0.0.1:8000/api/shop/get-author-list',
+            'authorList'
+        )
     }
 
     getCategoryList = () => {
-        axios
-            .get('http://127.0.0.1:8000/api/shop/get-category-list')
-            .then(response => {
-                this.setState({ categoryList: response.data })
-            })
-            .catch(error => {
-                console.log(error)
-            });
+        GetData(
+            this,
+            'http://127.0.0.1:8000/api/shop/get-category-list',
+            'categoryList'
+        )
     }
 
     filter = (type = '', id, page = 1) => {
@@ -65,25 +59,20 @@ export default class Shop extends React.Component {
         type == '' ?
             URL = `http://127.0.0.1:8000/api/shop/sort?page=${page}` :
             URL = `http://127.0.0.1:8000/api/shop/filter?conditions=${type},${id}&page=${page}`;
-        axios
-            .get(URL)
-            .then(response => {
-                this.setState({ listItem: response.data })
-            })
-            .catch(err => {
-                console.log(err)
-            });
+
+        GetData(
+            this,
+            URL,
+            'listItem'
+        )
     }
 
     getOnSaleAsc = () => {
-        axios
-            .get('http://127.0.0.1:8000/api/shop/sort')
-            .then(response => {
-                this.setState({ listItem: response.data })
-            })
-            .catch(error => {
-                console.log(error)
-            });
+        GetData(
+            this,
+            'http://127.0.0.1:8000/api/shop/sort',
+            'listItem'
+        )
     }
 
     handleClickPaginate = (index) => {
@@ -272,7 +261,6 @@ export default class Shop extends React.Component {
 
                                     />
                                     <br />
-                                    {/* <CustomPagination /> */}
                                 </Col>
                             </Row>
                         </Col>
