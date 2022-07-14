@@ -36,6 +36,17 @@
     color: white;
 }
 
+nav.myNavbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+nav.myNavbar span {
+    padding-left: 0.1rem;
+    font-weight: regular;
+}
 /* ==================== 
         || CardItem || '
     ==================== */

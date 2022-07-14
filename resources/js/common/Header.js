@@ -3,12 +3,20 @@ import {
     Nav, Navbar,
     Image
 } from 'react-bootstrap';
+import {
+    faHouse,
+    faShop,
+    faCartShopping,
+    faArrowRightToBracket,
+    faCircleInfo,
+} from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from "react-router-dom";
 import IMAGES from '../../assets';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Header() {
     return (
-        <Navbar collapseOnSelect expand="lg" bg="light" variant="dark" className="navbar-fixed-top">
+        <Navbar collapseOnSelect expand="lg" bg="light" variant="dark" className="myNavbar">
             <Container fluid className='d-flex'>
                 <Navbar.Brand href={"/"}>
                     <Image src={IMAGES.bookCover} fluid />
@@ -20,27 +28,34 @@ export default function Header() {
                     <Nav>
                         <NavLink to={'/'} className={
                             ({ isActive }) => (isActive ? 'myNavLinkIsActive' : 'myNavLink')
-                        }>Home</NavLink>
+                        }>
+                            <FontAwesomeIcon icon={faHouse} />
+                            <span>Home</span>
+                        </NavLink>
                         <NavLink to={'/shop'} className={
                             ({ isActive }) => (isActive ? 'myNavLinkIsActive' : 'myNavLink')
                         }>
-                            Shop
+                            <FontAwesomeIcon icon={faShop} />
+                            <span>Shop</span>
                         </NavLink>
                         <NavLink to={'/about'} className={
                             ({ isActive }) => (isActive ? 'myNavLinkIsActive' : 'myNavLink')
                         }>
-                            About
+                            <FontAwesomeIcon icon={faCircleInfo} />
+                            <span>About</span>
                         </NavLink>
                         <NavLink to={'/cart'} className={
                             ({ isActive }) => (isActive ? 'myNavLinkIsActive' : 'myNavLink')
                         }>
-                            Cart (0)
+                            <FontAwesomeIcon icon={faCartShopping} />
+                            <span>Cart (0)</span>
                         </NavLink>
-                        {/* <NavLink to={'/signin'} className={
+                        <NavLink to={'/signin'} className={
                             ({ isActive }) => (isActive ? 'myNavLinkIsActive' : 'myNavLink')
                         }>
-                            Sign In
-                        </NavLink> */}
+                            <FontAwesomeIcon icon={faArrowRightToBracket} />
+                            <span>Sign In</span>
+                        </NavLink>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

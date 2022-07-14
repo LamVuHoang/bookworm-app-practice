@@ -22,6 +22,7 @@ export default class Home extends React.Component {
             recommendedBook: [],
             popularBook: [],
             isRecommendedBook: true,
+            showModal: false
         };
     }
 
@@ -55,18 +56,26 @@ export default class Home extends React.Component {
             'popularBook'
         )
     }
+
+    handleModal = () => {
+        this.setState({ showModal: !this.state.showModal })
+    }
+
     render() {
         return (
             <>
                 <Header />
                 <br />
-
-                {/* <Modal show={true}>
+                <Button variant="secondary" onClick={this.handleModal}>
+                    Sign In
+                </Button>
+                <Modal show={this.state.showModal} onHide={this.handleModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Sign In</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form onSubmit={this.handleSubmit}>
+                        {/* <Form onSubmit={}> */}
+                        <Form>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Control type="email" name='email' placeholder="Enter email" />
@@ -82,14 +91,14 @@ export default class Home extends React.Component {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary">
+                        <Button variant="secondary" onClick={this.handleModal}>
                             Close
                         </Button>
                         <Button variant="primary">
                             Sign In
                         </Button>
                     </Modal.Footer>
-                </Modal> */}
+                </Modal>
 
                 <Container>
                     <Row>
