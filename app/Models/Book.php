@@ -41,13 +41,13 @@ class Book extends Model
                 "book.id AS book_id,
                 book.book_price AS book_price,
                 CASE
-                WHEN discount.discount_end_date IS NULL
-                AND DATE_TRUNC('DAY', discount.discount_start_date) < DATE_TRUNC('DAY', NOW()) 
-                THEN discount.discount_price
-                WHEN DATE_TRUNC('DAY', discount.discount_start_date) < DATE_TRUNC('DAY', NOW())
-                AND DATE_TRUNC('DAY', discount.discount_end_date) > DATE_TRUNC('DAY', NOW()) 
-                THEN discount.discount_price
-                ELSE 0
+                    WHEN discount.discount_end_date IS NULL
+                        AND DATE_TRUNC('DAY', discount.discount_start_date) < DATE_TRUNC('DAY', NOW()) 
+                        THEN discount.discount_price
+                    WHEN DATE_TRUNC('DAY', discount.discount_start_date) < DATE_TRUNC('DAY', NOW())
+                        AND DATE_TRUNC('DAY', discount.discount_end_date) > DATE_TRUNC('DAY', NOW()) 
+                        THEN discount.discount_price
+                    ELSE 0
                 END AS discount_price,
                 (book_price - discount_price) AS sub_price"
             )
@@ -60,9 +60,9 @@ class Book extends Model
             t1.discount_price,
             t1.sub_price,
             CASE 
-            WHEN t1.discount_price = 0
-                THEN t1.book_price
-            ELSE t1.discount_price
+                WHEN t1.discount_price = 0
+                    THEN t1.book_price
+                ELSE t1.discount_price
             END AS final_price
         ");
 

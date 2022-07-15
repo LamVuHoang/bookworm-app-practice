@@ -2,10 +2,9 @@ import React from 'react';
 import {
     Container, Row, Col,
     Button,
-    Modal, Form
 } from 'react-bootstrap';
 import {
-    Header, Footer, SignIn,
+    Header, Footer,
     CardItem,
     GetData,
 } from '../../common';
@@ -15,14 +14,13 @@ import { Link } from 'react-router-dom';
 import CustomCarousel from './CustomCarousel';
 
 export default class Home extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             onSale: [],
             recommendedBook: [],
             popularBook: [],
             isRecommendedBook: true,
-            showModal: false
         };
     }
 
@@ -31,7 +29,6 @@ export default class Home extends React.Component {
         this.getRecommemdedBook();
         this.getPopularBook();
     }
-
 
     getOnSaleBook = () => {
         GetData(
@@ -57,48 +54,11 @@ export default class Home extends React.Component {
         )
     }
 
-    handleModal = () => {
-        this.setState({ showModal: !this.state.showModal })
-    }
-
     render() {
         return (
             <>
                 <Header />
                 <br />
-                <Button variant="secondary" onClick={this.handleModal}>
-                    Sign In
-                </Button>
-                <Modal show={this.state.showModal} onHide={this.handleModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Sign In</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        {/* <Form onSubmit={}> */}
-                        <Form>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control type="email" name='email' placeholder="Enter email" />
-                            </Form.Group>
-
-                            <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" name='password' placeholder="Password" />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                                <Form.Check type="checkbox" label="Check me out" />
-                            </Form.Group>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleModal}>
-                            Close
-                        </Button>
-                        <Button variant="primary">
-                            Sign In
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
 
                 <Container>
                     <Row>
@@ -124,19 +84,27 @@ export default class Home extends React.Component {
                     </Row>
                     <Row>
                         <Col className='text-right d-flex justify-content-end'>
-                            <Button className='myLink'
+                            <Button className={
+                                this.state.isRecommendedBook === true ?
+                                    'myLinkActive' : 'myLink'
+                            }
                                 onClick={() => {
                                     this.setState({ isRecommendedBook: true })
                                 }}>Recommended</Button>
                         </Col>
                         <Col>
-                            <Button className='myLink'
+                            <Button className={
+                                this.state.isRecommendedBook === false ?
+                                    'myLinkActive' : 'myLink'
+                            }
                                 onClick={() => {
                                     this.setState({ isRecommendedBook: false })
                                 }}>Popular</Button>
                         </Col>
                     </Row>
                 </Container>
+
+                <br />
 
                 <Container>
                     <Row>

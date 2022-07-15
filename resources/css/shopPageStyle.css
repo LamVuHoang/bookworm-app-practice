@@ -5,3 +5,29 @@
     text-align: left;
     text-transform: capitalize;
 }
+
+/* ==================== 
+        || Accordion || '
+    ==================== */
+
+.myAccordion .accordion-body {
+    padding: 0;
+}
+
+.myAccordion .list-group-item {
+    padding: 0;
+    width: 100%;
+}
+
+.myAccordion button {
+    width: 100%;
+}
+
+.myAccordion button:active,
+.myAccordion button:visited,
+.myAccordion button:hover,
+.myAccordion button:focus {
+    background-color: #fa897b;
+    box-shadow: none;
+    width: 100%;
+}

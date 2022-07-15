@@ -24,7 +24,7 @@ export default function CardItem(props) {
                         <Card.Title>{props.data.book_title}</Card.Title>
                     </Link>
                     <Card.Text>
-                        {props.data.author_name}
+                        <span className='authorName'>{props.data.author_name}</span>
                         <br />
                         <span>{
                             props.data.discount_price == 0 ? (

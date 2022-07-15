@@ -25,3 +25,36 @@
 .swiper-button-prev {
     color: red;
 }
+
+/* ==================== 
+        || Button || '
+    ==================== */
+
+.myLink,
+.myLink:active,
+.myLink:visited,
+.myLink:hover,
+.myLink:focus {
+    background-color: #dde6a5;
+    border-radius: 1rem;
+    border-style: solid;
+    border: 0.1rem #dde6a5;
+    box-shadow: none;
+    color: #001b48;
+    padding: 1rem;
+    text-decoration: none;
+}
+.myLinkActive,
+.myLinkActive:active,
+.myLinkActive:visited,
+.myLinkActive:hover,
+.myLinkActive:focus {
+    background-color: #fa897b;
+    border-radius: 1rem;
+    border-style: solid;
+    border: 0.1rem #fa897b;
+    box-shadow: none;
+    color: white;
+    padding: 1rem;
+    text-decoration: none;
+}

@@ -35,9 +35,4 @@ class HomePageController extends Controller
     {
         return response($this->_bookRepository->getPopular($number));
     }
-
-    public function test()
-    {
-        return response($this->_bookRepository->test());
-    }
 }

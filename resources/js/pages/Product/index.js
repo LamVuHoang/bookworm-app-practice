@@ -14,8 +14,8 @@ import React from "react";
 import IMAGES from "../../../assets";
 
 export default class Product extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             id: [],
             product: [],

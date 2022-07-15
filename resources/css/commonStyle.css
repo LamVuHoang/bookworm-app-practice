@@ -2,45 +2,40 @@
         || Header || '
     ==================== */
 
-.myNavLink {
+.myNavLink,
+.myNavLink:active,
+.myNavLink:visited,
+.myNavLink:hover,
+.myNavLink:focus {
     padding: 2vh;
     text-decoration: none;
-    color: rgb(15, 16, 20);
+    color: #02457a !important;
 }
-.myNavLink:hover {
-    padding: 2vh;
-    text-decoration: none;
-    color: rgb(15, 16, 20);
-}
-.myNavLinkIsActive {
+
+.myNavLinkIsActive,
+.myNavLinkIsActive:active,
+.myNavLinkIsActive:visited,
+.myNavLinkIsActive:hover,
+.myNavLinkIsActive:focus {
     padding: 2vh;
     text-decoration: underline;
-    color: red;
+    color: #dcd964;
     font-weight: bold;
 }
 
-.myLink {
-    text-decoration: none;
-    border: 0.1rem green;
-    color: green;
-    background-color: white;
-    border-style: solid;
-    border-radius: 1rem;
-    padding: 1rem;
-}
-
-.myLink:hover {
-    text-decoration: inherit;
-    border: inherit;
-    background-color: green;
-    color: white;
-}
 
 nav.myNavbar {
     position: -webkit-sticky;
     position: sticky;
+    background: rgb(88, 106, 226);
+    background: linear-gradient(
+        90deg,
+        rgba(88, 106, 226, 1) 0%,
+        rgba(183, 38, 85, 1) 35%,
+        rgba(227, 6, 20, 1) 100%
+    );
     top: 0;
-    z-index: 2;
+    z-index: 1000 !important;
 }
 
 nav.myNavbar span {
@@ -57,4 +52,20 @@ nav.myNavbar span {
 }
 .myImage > img {
     width: 50%;
+}
+
+.myItem .card-body a {
+    text-decoration: none;
+}
+
+.myItem .card-title {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #ff8357;
+    text-align: left;
+}
+
+.authorName {
+    font-size: 0.9rem;
+    color: #ccabd8;
 }

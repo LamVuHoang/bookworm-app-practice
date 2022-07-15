@@ -8,7 +8,7 @@ import IMAGES from '../../assets';
 
 export default function Footer() {
     return (
-        <Navbar collapseOnSelect expand="lg" bg="light" variant="dark" className="navbar-fixed-top">
+        <Navbar collapseOnSelect expand="lg" className="myNavbar">
             <Container fluid>
                 <Navbar.Brand href="#home">
                     <Image src={IMAGES.bookCover} fluid />

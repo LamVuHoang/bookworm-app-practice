@@ -16,8 +16,8 @@ import '../../../css/shopPageStyle.css';
 import ReactPaginate from 'react-paginate';
 
 export default class Shop extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             authorList: [],
             categoryList: [],
@@ -127,7 +127,7 @@ export default class Shop extends React.Component {
                                 Filter By
                             </div>
                             <div>
-                                <Accordion defaultActiveKey="0">
+                                <Accordion defaultActiveKey="0" className='myAccordion'>
                                     <Accordion.Item eventKey="0">
                                         <Accordion.Header>
                                             <div className="h6 font-weight-bold">Category</div>

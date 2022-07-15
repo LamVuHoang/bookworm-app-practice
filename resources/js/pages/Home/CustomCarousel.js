@@ -18,7 +18,7 @@ export default function CustomCarousel(props) {
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true }}
             onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
+            // onSlideChange={() => console.log('slide change')}
         >
             {props.data.map(item => (
                 <SwiperSlide >

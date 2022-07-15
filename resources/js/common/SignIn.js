@@ -2,15 +2,28 @@ import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 
 export default class SignIn extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            showModal: false
+        }
+    }
+
+    closeModal = () => {
+        this.setState({ showModal: !this.state.showModal })
+    }
+
+
     render() {
         return (
             <>
-                <Modal show={show} onHide={handleClose}>
+                <Modal show={this.state.showModal} onHide={this.closeModal}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Sign In</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Control type="email" name='email' placeholder="Enter email" />
@@ -23,19 +36,14 @@ export default class SignIn extends React.Component {
                             <Form.Group className="mb-3" controlId="formBasicCheckbox">
                                 <Form.Check type="checkbox" label="Check me out" />
                             </Form.Group>
-                            <div className='text-center'>
-                                <Button variant="primary" type='submit'>
-                                    Submit
-                                </Button>
-                            </div>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary" onClick={this.closeModal}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={handleClose}>
-                            Save Changes
+                        <Button variant="primary">
+                            Sign In
                         </Button>
                     </Modal.Footer>
                 </Modal>
